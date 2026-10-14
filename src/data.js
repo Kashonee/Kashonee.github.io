@@ -11,9 +11,9 @@ export const demoScenes = [
   { id: 'life-1', room_id: 'life', title: 'Өмір белестері', panorama_path: '/panoramas/life-1.jpg', initial_yaw: 0, initial_pitch: 0, published: true, sort_order: 0 },
   { id: 'life-2', room_id: 'life', title: 'Естеліктер', panorama_path: '/panoramas/life-2.jpg', initial_yaw: 0, initial_pitch: 0, published: true, sort_order: 1 },
   { id: 'works-1', room_id: 'works', title: 'Еңбектер залы', panorama_path: '/panoramas/works-1.jpg', initial_yaw: 0, initial_pitch: 0, published: true, sort_order: 0 },
-  { id: 'works-2', room_id: 'works', title: 'Кітаптар бұрышы', panorama_path: '/panoramas/works-2.jpg', initial_yaw: 0, initial_pitch: 0, published: true, sort_order: 1 },
-  { id: 'legacy-1', room_id: 'legacy', title: 'Жетістіктер', panorama_path: '/panoramas/legacy-1.jpg', initial_yaw: 0, initial_pitch: 0, published: true, sort_order: 0 },
-  { id: 'legacy-2', room_id: 'legacy', title: 'Мұрағат', panorama_path: '/panoramas/legacy-2.jpg', initial_yaw: 0, initial_pitch: 0, published: true, sort_order: 1 },
+  { id: 'works-2', room_id: 'works', title: 'Кітаптар бұрышы', panorama_path: '/panoramas/heritage.svg', initial_yaw: 0, initial_pitch: 0, published: true, sort_order: 1 },
+  { id: 'legacy-1', room_id: 'legacy', title: 'Жетістіктер', panorama_path: '/panoramas/heritage.svg', initial_yaw: 0, initial_pitch: 0, published: true, sort_order: 0 },
+  { id: 'legacy-2', room_id: 'legacy', title: 'Мұрағат', panorama_path: '/panoramas/heritage.svg', initial_yaw: 0, initial_pitch: 0, published: true, sort_order: 1 },
 ];
 
 // Deliberately content-free demonstration records: no invented biographical facts.
