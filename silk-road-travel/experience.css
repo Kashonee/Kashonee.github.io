@@ -31,3 +31,20 @@ body{overflow-x:hidden}.reading-progress{height:2px;background:var(--gold);posit
 .save-detail .ui-icon{width:17px;height:17px}
 .scene-compass b,.mast-emblem b{display:grid;place-items:center;line-height:1}
 .tour-ornament .ui-icon,.detail-big-mark .ui-icon,.heritage-rule>span>.ui-icon{display:block}
+
+/* Presentation entry stays visible beside the menu on phones and on the board. */
+.defense-link{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:9px 12px;border:1px solid #e8c991;border-radius:7px;background:#dfb976;color:#142c39;font-size:11px;font-weight:800;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.defense-link .ui-icon{width:17px;height:17px}
+.defense-label-short{display:none}
+.defense-link:hover{background:#efd4a3}
+.defense-link:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.hero-actions{flex-wrap:wrap;gap:18px 24px}
+.hero-defense{display:inline-flex;align-items:center;gap:9px}
+.hero-defense .ui-icon{width:20px;height:20px}
+@media(min-width:761px) and (max-width:1150px){.topbar .nav{gap:12px}.topbar .brand{min-width:140px}.topbar .nav-links{gap:10px}.topbar .nav-links a{font-size:10px}.defense-link{font-size:10px;padding:9px}.topbar .passport-link{padding:4px 8px}}
+@media(max-width:1050px){.topbar .nav{justify-content:space-between;gap:10px}.topbar .brand{min-width:0}.topbar .menu-toggle{display:block;order:3;min-width:36px;min-height:44px}.topbar .nav-links{display:none;position:absolute;left:0;right:0;top:76px;background:var(--navy2);padding:16px 20px 20px;flex-direction:column;align-items:stretch;gap:0;box-shadow:0 15px 24px #0b18258c}.topbar .nav-links.open{display:flex}.topbar .nav-links a{font-size:14px;padding:12px 15px}.defense-link{margin-left:auto}.topbar .passport-link{margin-left:0}}
+@media(max-width:760px){.topbar .nav{gap:10px}.topbar .brand{min-width:0}.defense-link{margin-left:auto}.topbar .passport-link{margin-left:0}}
+@media(max-width:760px){.topbar .nav-links{top:67px}}
+@media(max-width:480px){.defense-label-long{display:none}.defense-label-short{display:inline}.defense-link .ui-icon{display:none}.defense-link{padding:9px 10px;font-size:11px}.topbar .nav{gap:8px}}
+@media(max-width:380px){.topbar .nav{gap:6px}.topbar .brand{gap:7px;font-size:11px}.topbar .brand strong{font-size:15px}.topbar .brand-mark{width:32px;height:32px}.topbar .passport-link{padding:4px 7px}.defense-link{padding:9px 8px}}
+@media print{.defense-link{display:none}}

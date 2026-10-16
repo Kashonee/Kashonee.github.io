@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#142c39">
+  <meta name="description" content="Silk Road Travel жобасын интерактивті тақтада қорғауға арналған бес кезеңді таныстырылым.">
+  <title>Жобаны қорғау — Silk Road Travel</title>
+  <link rel="stylesheet" href="./defense.css?v=20261016-defense">
+  <script src="./travel-data.js?v=20261016-defense" defer></script>
+  <script src="./defense.js?v=20261016-defense" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#presentation">Мазмұнға өту</a>
+  <div class="defense-shell">
+    <header class="defense-header">
+      <a class="defense-brand" href="./index.html" aria-label="Silk Road Travel басты бет">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m16 2 3 11 11 3-11 3-3 11-3-11-11-3 11-3Z"/><circle cx="16" cy="16" r="2"/></svg>
+        <span>Silk Road <strong>Travel</strong></span>
+      </a>
+      <span class="mode-label">ЖОБАНЫ ҚОРҒАУ</span>
+      <div class="header-actions">
+        <button id="fullscreenToggle" class="quiet-button" type="button" aria-pressed="false" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg>
+          <span id="fullscreenLabel">Толық экран</span>
+        </button>
+        <a class="exit-link" href="./index.html">Сайтқа оралу</a>
+      </div>
+    </header>
+
+    <nav class="step-navigation" aria-label="Қорғау кезеңдері">
+      <button type="button" data-stage="0" aria-current="step"><span>01</span> Мақсат</button>
+      <button type="button" data-stage="1"><span>02</span> Модель</button>
+      <button type="button" data-stage="2"><span>03</span> Масштаб</button>
+      <button type="button" data-stage="3"><span>04</span> Салыстыру</button>
+      <button type="button" data-stage="4"><span>05</span> Қорытынды</button>
+    </nav>
+
+    <main id="presentation">
+      <section id="maqset" class="stage" aria-labelledby="goalTitle" tabindex="-1">
+        <div class="stage-kicker">01 / МАҚСАТ</div>
+        <div class="goal-layout">
+          <div>
+            <p class="project-name">SILK ROAD TRAVEL</p>
+            <h1 id="goalTitle">Тарихты таны.<br><em>Бағытыңды таңда.</em></h1>
+            <p class="lead">Ұлы Жібек жолының тарихи мұрасын туристік маршрут арқылы таныту.</p>
+          </div>
+          <div class="goal-card">
+            <span class="card-label">ЗЕРТТЕУ МАҚСАТЫ</span>
+            <p>Алты тарихи орталық негізінде мәдени-танымдық маршруттар әзірлеп, оларды бір цифрлық платформада таныстыру.</p>
+            <div class="goal-points"><span>6 тарихи орталық</span><span>3 маршрут</span><span>1 платформа</span></div>
+          </div>
+        </div>
+        <p class="stage-note"><strong>Зерттеу сұрағы:</strong> тарихты, сапар уақытын және қауіпсіздікті ескеріп, қолжетімді бағытты қалай құрамыз?</p>
+      </section>
+
+      <section id="model" class="stage" aria-labelledby="modelTitle" tabindex="-1" hidden>
+        <div class="stage-kicker">02 / МОДЕЛЬ</div>
+        <h1 id="modelTitle">Алты орталық. <em>Бір жүйе.</em></h1>
+        <div class="city-model" id="cityModel" aria-label="Зерттелген алты тарихи орталық"></div>
+        <ol class="model-flow" aria-label="Жобаның жұмыс реті">
+          <li><b>01</b><span>Тарихи дерек</span></li>
+          <li><b>02</b><span>Маршрут моделі</span></li>
+          <li><b>03</b><span>Цифрлық платформа</span></li>
+        </ol>
+        <p class="stage-note">Әр орталық үшін нақты нысан, тарихи мәлімет, дереккөз және сапарға қатысты ескерту біріктірілді.</p>
+      </section>
+
+      <section id="masshtab" class="stage" aria-labelledby="scopeTitle" tabindex="-1" hidden>
+        <div class="stage-kicker">03 / МАСШТАБ · САПАР АУҚЫМЫ</div>
+        <h1 id="scopeTitle">Уақытыңа сай <em>маршрут.</em></h1>
+        <div class="route-selector" role="group" aria-label="Сапар ұзақтығын таңдау">
+          <button type="button" data-defense-route="short" aria-pressed="true">1 күн</button>
+          <button type="button" data-defense-route="medium" aria-pressed="false">3 күн</button>
+          <button type="button" data-defense-route="long" aria-pressed="false">7 күн</button>
+        </div>
+        <div class="route-metrics" aria-live="polite" aria-atomic="true">
+          <div><strong id="scopeDays">1</strong><span>күндік сапар</span></div>
+          <div><strong id="scopeDistance">170</strong><span>км · модельдік қашықтық</span></div>
+          <div><strong id="scopeCities">2</strong><span>тарихи орталық</span></div>
+        </div>
+        <p class="route-path" id="scopePath">Түркістан → Отырар → Түркістан</p>
+        <p class="route-warning" id="scopeWarning"></p>
+        <p class="stage-note"><strong>Жоспарлық модель.</strong> Қашықтықтар — жобадағы есептік шамалар, нақты автожол өлшемдері емес.</p>
+      </section>
+
+      <section id="salystyru" class="stage" aria-labelledby="compareTitle" tabindex="-1" hidden>
+        <div class="stage-kicker">04 / САЛЫСТЫРУ</div>
+        <h1 id="compareTitle">Қамту артса, <em>жол да ұзарады.</em></h1>
+        <div class="comparison-layout">
+          <div class="comparison-chart" id="comparisonChart" aria-label="Үш маршруттың модельдік қашықтығы мен таза жүріс уақытын салыстыру"></div>
+          <div class="speed-card">
+            <label for="defenseSpeed">Шартты орташа жылдамдық</label>
+            <output id="defenseSpeedValue" for="defenseSpeed">55 <span>км/сағ</span></output>
+            <input id="defenseSpeed" type="range" min="40" max="80" step="5" value="55" aria-describedby="speedExplanation">
+            <div class="range-labels" aria-hidden="true"><span>40</span><span>80 км/сағ</span></div>
+            <p id="speedExplanation">Таза жүріс уақыты = қашықтық ÷ орташа жылдамдық.</p>
+          </div>
+        </div>
+        <p class="stage-note"><strong>Есептік салыстыру.</strong> Уақыт 10 минутқа дейін дөңгелектенеді. Аялдама, нысан аралау және түнеу уақыты қосылмаған. Бұл жылдамдықпен жүруге ұсыныс емес.</p>
+      </section>
+
+      <section id="qorytyndy" class="stage" aria-labelledby="conclusionTitle" tabindex="-1" hidden>
+        <div class="stage-kicker">05 / ҚОРЫТЫНДЫ</div>
+        <h1 id="conclusionTitle">Мұраны таныту. <em>Сапарды жоспарлау.</em></h1>
+        <div class="conclusion-grid">
+          <article><span class="result-number">06</span><h2>Тарихи орталық</h2><p>Тарихы мен туристік ерекшеліктері бір жүйеге келтірілді.</p></article>
+          <article><span class="result-number">03</span><h2>Маршрут моделі</h2><p>Ұзақтығы, қашықтығы және қамтитын орталықтары салыстырылды.</p></article>
+          <article><span class="result-number">01</span><h2>Веб-платформа</h2><p>Қалалар, карта, маршруттар және танымдық құралдар біріктірілді.</p></article>
+        </div>
+        <p class="conclusion-line">Silk Road Travel — тарихи мұраны танып-білу мен туристік сапарды жоспарлауды біріктіретін цифрлық жоба.</p>
+        <div class="conclusion-links"><a href="./map.html">Интерактивті картаны ашу</a><a href="./routes.html">Маршрутты құрастыру</a><a href="./research.html">Зерттеу мен дереккөздер</a></div>
+        <p class="stage-note">Сапар алдында жол жағдайын, нысандардың жұмыс уақытын және кіру тәртібін тексеру қажет. Мұраны сақтау мен қауіпсіздік — әр маршруттың шарты.</p>
+      </section>
+      <noscript><p class="no-script">Кезеңдерді ауыстыру үшін JavaScript қосулы болуы қажет. <a href="./research.html">Зерттеу бетіне өту</a>.</p></noscript>
+    </main>
+
+    <footer class="defense-footer">
+      <p class="keyboard-hint">Пернетақта: ← → <span>· Home / End</span></p>
+      <div class="slide-controls" aria-label="Кезеңдерді ауыстыру">
+        <button id="previousStage" class="control-button" type="button" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m14 6-6 6 6 6M8 12h13"/></svg> Алдыңғы
+        </button>
+        <span id="stageCounter" class="stage-counter" aria-label="Кезең нөмірі">1 / 5</span>
+        <button id="nextStage" class="control-button next-button" type="button">Келесі
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m10 6 6 6-6 6M16 12H3"/></svg>
+        </button>
+      </div>
+    </footer>
+  </div>
+  <p id="stageAnnouncement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+  <p id="fullscreenStatus" class="sr-only" role="status" aria-live="polite"></p>
+</body>
+</html>
