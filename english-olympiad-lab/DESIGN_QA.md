@@ -22,7 +22,7 @@ The existing buildless JavaScript architecture and GitHub Pages deployment are r
 
 ## Validation
 
-- 109 Node automated tests pass, including existing grading, import/recovery, persistence, retest scheduling, transport and feedback cases.
+- 113 Node automated tests pass, including existing grading, import/recovery, persistence, retest scheduling, transport and feedback cases.
 - New tests cover theme isolation, all 88 question navigation targets, persistent flags, untimed mode locking, empty-state analytics, evidence-derived achievements, new routes and assignment identity guards.
 - All application JavaScript passes syntax checks; local asset references are checked.
 - Tests use a modeled DOM and mocked Auth/REST transport. They are not real browser end-to-end tests.
@@ -34,3 +34,7 @@ The public learning application works locally in the browser. Account integratio
 Hosted PostgreSQL RLS has not been executed here. Run verify-access.sql and validate assignment policies with at least two pupils and a teacher before collecting real pupil data. A teacher must see only linked pupils; pupils must not create assignments, read another pupil's tasks, alter teacher feedback or write another pupil's response. Anonymous access must fail.
 
 A browser rendering facility is unavailable in this environment. Real rendering at 320/375/768/1024/1440 px, keyboard and screen-reader behavior, zoom, mobile Safari and Chrome, and real network loading remain manual release checks. CSS breakpoints and automated DOM tests do not establish absence of visual overflow or full WCAG 2.2 AA compliance.
+
+## Kazakh interface update
+
+All public platform navigation, landing copy, account messages, teacher controls, achievements and diagnostic UI are in Kazakh. Original English exercise stems, choices, reading texts, writing assignments and learning examples are retained. Topic and vocabulary category headings are translated only when displayed; their source data and identifiers remain unchanged. Dedicated task blocks declare lang=en while document language stays kk. 113 tests pass, including checks of Kazakh controls and preserved English tasks. The original diagnostic, lesson, vocabulary and six Writing definitions were compared before/after and are identical. Browser visual validation remains unavailable.
