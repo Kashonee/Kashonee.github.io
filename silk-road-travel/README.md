@@ -32,3 +32,14 @@ Coordinate corrections: Kone Taraz archaeological site uses OSM node 5338584774 
 External reference checks: the indexed Yandex city-to-city page https://yandex.kz/maps/ru/routes/auto/chimkent/turkestan/ showed 164 km when retrieved; https://yandex.kz/maps/ru/routes/auto/almaty/talgar/ showed 31 km; https://yandex.kz/maps/ru/routes/auto/almaty/taldikorgan/ showed 263 km. These endpoints are the map service's cities, not the monuments in this planner; they are not used as replacement route legs. Indexed estimates are not live traffic data. No complete exact-stop routing response could be obtained in the editing environment due to network restrictions. Automated logic tests use synthetic fixtures only; no fixture values are shipped as tourist distances.
 
 References: https://project-osrm.org/docs/v5.24.0/api/ ; https://routing.openstreetmap.de/about.html ; https://developers.google.com/maps/documentation/urls/get-started . Public routing services have no availability guarantee; pre-trip checks in a navigator remain necessary.
+
+
+## Керуен жолымен — animated tour (28 October 2026)
+
+Open `map.html#caravan` and select «Сапарды бастау». A native modal dialog contains an independent Leaflet map, six city stories, attributed photographs, a stop selector and large playback controls. It does not modify the visitor's route, speed or saved stops. A separate map prevents delayed road-service replies from interrupting the presentation.
+
+The sequence is Turkestan → Otyrar → Sayram → Taraz → Talgar → Qoylyq. Map targets match the existing photographs: the Otyrar region shows Arystanbab, and the Taraz region shows Aisha Bibi; captions distinguish those sites from the archaeological city centres. Text uses the existing historical-source catalogue, and each stop exposes its history and photo sources.
+
+`caravan-core.js` owns playback with 20 seconds of reading time after each map arrival. Pause preserves remaining reading time; pausing a flight stops the camera and resume completes that flight. Next/previous and selecting a stop preserve paused playback. Replay starts again; the last stop ends automatically without looping. Stale arrival promises cannot advance a newer stop. Closing clears timers; switching to a hidden tab pauses. Reduced-motion settings disable camera flights and decorative animations. Image/map failures leave readable stories and source links. Fullscreen is optional; the dialog also works without that browser capability.
+
+Validation: `node tests/caravan-core.test.cjs` covers pause/resume, interrupted flights, stale callbacks, repeated starts, paused navigation, completion and cleanup. Syntax, IDs, script ordering and local link targets are checked separately. No browser runner is available in the editing environment; visual and live map/photo loading verification remain unperformed here.
