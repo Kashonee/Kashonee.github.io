@@ -13,3 +13,10 @@ The current browser UI can obtain actual road-network outputs, but these are est
 Authors: Бақтыгерей Дана and Алламберген Камшат, grade 7, №3 Қарауылкелді орта мектебі. Supervisor: Аккожаева Самал Кожагалиевна.
 
 The project representative reports user trials occurred. Raw participant counts and measurements have not been supplied to the site. No efficacy statistics are invented.
+
+## Added photographs (27 October 2026)
+
+- Sayram: Karashash Ana.JPG, Yakov Fedorov, 15 June 2014, CC BY-SA 3.0. Source: https://commons.wikimedia.org/wiki/File:Karashash_Ana.JPG . License: https://creativecommons.org/licenses/by-sa/3.0/ . Commons file description and visible architecture were cross-checked; the structured depicts field appears inconsistent with the file description/category. Image is displayed responsively, without a generated reconstruction.
+- Qoylyq: Welcome.kz image explicitly captioned “Городище Койлык” in https://welcome.kz/ru/ind-tours/ind-tours-almaty/ind-golden-ring-jungariya . Asset: https://welcome.kz/assets/images/products/0_gallery/locations/zhetysu_region/koilyk.jpeg . The site permits copying with an active source link: https://welcome.kz/en/info-cities/zhetysu-oblast/koilyk . Photographer is not separately identified. This is not claimed to be a Creative Commons image.
+
+Photos are loaded from their original hosts. Attribution and source links appear on the city cards, city pages and virtual tour. Loading depends on those external hosts.

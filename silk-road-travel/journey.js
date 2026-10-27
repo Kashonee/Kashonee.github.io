@@ -49,7 +49,7 @@
  if($('#virtualCard')){
   const currentRender=renderVirtual;renderVirtual=function(){currentRender();const c=cities[virtualIndex],task=observationTasks[c.id],s=placeById[c.id];
    $('#virtualCard').insertAdjacentHTML('beforeend','<div class="tour-learning"><h3>Бақыла және түсіндір</h3><p>'+task.focus+'</p><details><summary>'+task.question+'</summary><p>'+task.answer+'</p></details><div class="passport-actions">'+heritageSites.filter(x=>x.city===c.id).map(x=>'<a href="./map.html?city='+x.id+'">'+x.name+'</a>').join('')+'</div></div>');
-   if(!c.photo){const photo=$('#virtualCard .tour-photo');photo.innerHTML='<iframe title="'+c.name+' тарихи орнының картасы" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox='+[s.lon-.02,s.lat-.012,s.lon+.02,s.lat+.012].join('%2C')+'&layer=mapnik&marker='+s.lat+'%2C'+s.lon+'"></iframe><span class="map-view-label">Нақты орынның картасы · OpenStreetMap</span>';$('#virtualCard').classList.add('tour-map-view');}else $('#virtualCard').classList.remove('tour-map-view');
+   if(!cityImage(c)){const photo=$('#virtualCard .tour-photo');photo.innerHTML='<iframe title="'+c.name+' тарихи орнының картасы" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox='+[s.lon-.02,s.lat-.012,s.lon+.02,s.lat+.012].join('%2C')+'&layer=mapnik&marker='+s.lat+'%2C'+s.lon+'"></iframe><span class="map-view-label">Нақты орынның картасы · OpenStreetMap</span>';$('#virtualCard').classList.add('tour-map-view');}else $('#virtualCard').classList.remove('tour-map-view');
   };renderVirtual();
  }
  links();
