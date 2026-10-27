@@ -1,25 +1,15 @@
 # Silk Road Travel
 
-Ұлы Жібек жолының Қазақстандағы мұрасын танытатын қазақ тіліндегі туристік платформа.
+Kazakh-language cultural travel research project, deployed under /silk-road-travel/.
 
-- 15 HTML бет, 6 тарихи қала.
-- OpenStreetMap картасы, координаталары дереккөздермен берілген 6 тарихи нысан.
-- Маршрут конструкторы, уақыт калькуляторы, виртуалды танысу және викторина.
-- «Жобаны қорғау»: интерактивті тақтаға арналған 5 кезеңді таныстырылым.
-- Тек статикалық HTML, CSS, JavaScript. Құрастыру немесе сервер қажет емес.
+The original city descriptions and research distances (170/430/1655 km) remain reference models. `site-data.js` is the canonical catalogue of ten monuments and three explicitly labelled city-centre transit points. Maps, custom planning and visitor cards use these same coordinates.
 
-Кіру файлы: `index.html`. Барлық файлдар бір бумада сақталады. Карта, фотосуреттер және кейбір қаріптер интернеттен жүктеледі. Фото лицензиялары мен карта атрибуциясы сайт ішінде берілген.
+`planner-core.js` owns validated URL/storage state (route, ordered stops, speed, visit hours, breaks, return-to-start), road requests, short-lived browser caching, and leg tables. Driving geometries and distances come from the public OSRM demo over HTTPS using OpenStreetMap. No keys are required. Requests are coalesced and throttled, timeout after 15 seconds, and fail with an explicit unavailable state. There is no fabricated kilometre fallback. Records expire after seven days on reload. Public demo availability is not guaranteed; deploy a maintained routing provider for sustained traffic.
 
-## Жобаны қорғау
+`journey.js` connects route and calculator views, visitor passports and observation tasks. `geo-map.js` renders individual monuments and the selected road geometry. `defense.html` is the five-step presentation of the original research model; it also links to current road calculations.
 
-Кез келген беттің жоғарғы жағындағы «Жобаны қорғау» батырмасын басыңыз (шағын экранда — «Қорғау»). Тікелей сілтеме: `defense.html`.
+The current browser UI can obtain actual road-network outputs, but these are estimates, not live traffic or confirmed monument entrances. Raw source URL, retrieval date and legs accompany each successful result. A destination can be snapped to a road within 1500 metres; pedestrian access must be checked separately.
 
-Мақсат → Модель → Масштаб → Салыстыру → Қорытынды. Кезеңді жоғарғы мәзірден немесе «Алдыңғы» / «Келесі» батырмаларымен таңдауға болады. Пернетақтада ← / →, PageUp / PageDown, Home / End және бос орын жұмыс істейді. Басқару өрістерімен жұмыс істегенде пернелер олардың өз қызметін сақтайды.
+Authors: Бақтыгерей Дана and Алламберген Камшат, grade 7, №3 Қарауылкелді орта мектебі. Supervisor: Аккожаева Самал Кожагалиевна.
 
-Браузер қолдаса, «Толық экран» батырмасы көрсетіледі. Толық экраннан шығу: Escape немесе «Экранды кішірейту». Қолдамайтын браузерде таныстырылым терезе ішінде жұмыс істейді. Интернетсіз де қорғау беті жергілікті файлдардан ашылады.
-
-«Масштаб» кезеңінде 1 / 3 / 7 күндік сапарды таңдауға, «Салыстыру» кезеңінде шартты орташа жылдамдықты өзгертіп, таза жүріс уақытын есептеуге болады. Қашықтық бағандары ортақ шкалада көрсетілген. Уақыт 10 минутқа дейін дөңгелектенеді, аялдамалар мен түнеуді қамтымайды.
-
-Қалалар мен дайын маршруттардың ортақ деректері `travel-data.js` ішінде; ол `app.js` және `defense.js` файлдарынан бұрын жүктеледі. Қорғау бетінің бөлек стильдері мен басқаруы: `defense.css`, `defense.js`.
-
-Маршрут сандары — жоспарлық модель; олар автожолдың дәл өлшемі емес. Сапар алдында жол жағдайын және нысандарға кіру тәртібін тексеру қажет.
+The project representative reports user trials occurred. Raw participant counts and measurements have not been supplied to the site. No efficacy statistics are invented.

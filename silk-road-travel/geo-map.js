@@ -1,71 +1,28 @@
-(function(){
- 'use strict';
- const el=document.getElementById('liveMap');
- if(!el)return;
- const sites=[
-  {id:'turkestan',label:'Қожа Ахмет Ясауи кесенесі',lat:43+17/60+51.7/3600,lon:68+16/60+15.8/3600,source:'https://whc.unesco.org/en/list/1103/maps/',sourceName:'UNESCO · географиялық деректер'},
-  {id:'otyrar',label:'Отырар археологиялық орны',lat:42.852822,lon:68.302987,source:'https://rdr.ucl.ac.uk/articles/dataset/Otrar_archaeological_site_digital_geospatial_dataset_2016/11690835',sourceName:'University College London · Otrar geospatial dataset (2020)'},
-  {id:'taraz',label:'Көне Тараз музейі',lat:42.89980,lon:71.36690,source:'https://kazakhstan.travel/en/attractions/199',sourceName:'Kazakhstan.travel · Көне Тараз музейі'},
-  {id:'sairam',label:'Қарашаш ана кесенесі',lat:42.29930,lon:69.75746,source:'https://kazakhstan.travel/en/attractions/473',sourceName:'Kazakhstan.travel · Қарашаш ана'},
-  {id:'talgar',label:'Талхир қалашығы',lat:43+16/60+40/3600,lon:77+13/60+20/3600,source:'https://whc.unesco.org/en/list/1442/maps/',sourceName:'UNESCO · 1442-012 Site of Talgar'},
-  {id:'qoylyq',label:'Қаялық қалашығы',lat:45+39/60+56/3600,lon:80+15/60+38/3600,source:'https://whc.unesco.org/en/list/1442/maps/',sourceName:'UNESCO · 1442-011 Site of Kayalyk'}
- ];
- const names=Object.fromEntries(sites.map(s=>[s.id,s]));
- const params=new URLSearchParams(location.search);
- const animate=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- let chosen=names[params.get('city')]?params.get('city'):'turkestan',region='all',map=null;
- const markers=new Map();
- const state=document.getElementById('mapLoadState');
- const nationalBounds=[[40.55,46.4],[55.45,87.4]];
- function osmLink(s){return'https://www.openstreetmap.org/?mlat='+s.lat.toFixed(6)+'&mlon='+s.lon.toFixed(6)+'#map=15/'+s.lat.toFixed(6)+'/'+s.lon.toFixed(6)}
- function visible(){return sites.filter(s=>region==='all'||byId[s.id].region===region)}
- function buttonMode(id){['mapFullCountry','mapAllSites','mapSelected'].forEach(key=>document.getElementById(key).classList.toggle('active',id===key))}
- function renderList(){
-  document.getElementById('geoCityList').innerHTML=visible().map(s=>'<button type="button" data-geo-site="'+s.id+'" class="'+(s.id===chosen?'active':'')+'"><span>'+(sites.indexOf(s)+1)+'</span>'+byId[s.id].name+'</button>').join('')
+'use strict';
+(()=>{
+ const el=document.getElementById('liveMap');if(!el)return;
+ const $=id=>document.getElementById(id),esc=SRT.escape,params=new URLSearchParams(location.search);
+ let chosen=Object.hasOwn(placeById,params.get('city'))?params.get('city'):'turkestan',map=null,routeLine=null,requestVersion=0;
+ const markers=new Map(),all=[...heritageSites,...transitSites];
+ $('mapStage').insertAdjacentHTML('beforebegin','<section class="map-plan-panel"><div class="kicker">КАРТА + МАРШРУТ + ЕСЕП</div><h2>Сапарды бір жоспармен жалғастыр.</h2><div class="map-plan-controls"><label>Бағдар <select id="mapRouteChoice"><option value="short">1 күндік</option><option value="medium">3 күндік</option><option value="long">7 күндік</option><option value="custom">Өз бағытым</option></select></label><label>Орташа жылдамдық <input type="number" id="mapRouteSpeed" min="40" max="80" step="5" aria-label="Шартты орташа жылдамдық, км/сағ"> км/сағ</label><a id="mapEditRoute">Аялдамаларды өзгерту</a><a id="mapCalculate">Толық уақыт есебі</a></div><p id="mapRoutePath" class="map-plan-path"></p><div id="mapRouteSummary" aria-live="polite"></div><details><summary>Учаскелер мен дереккөз</summary><div id="mapRoadLegs"></div></details></section>');
+ $('mapRouteChoice').value=SRT.state.kind;$('mapRouteSpeed').value=SRT.state.speed;
+ function siteInfo(id){chosen=id;document.querySelectorAll("[data-geo-site]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.geoSite===id)));markers.forEach((marker,key)=>marker.getElement()?.querySelector(".route-marker")?.classList.toggle("selected",key===id));const s=placeById[id];$('mapDetail').innerHTML='<div class="map-small">'+(s.transit?'ТРАНЗИТ НҮКТЕСІ':esc(byId[s.city].name))+'</div><h3>'+esc(s.name)+'</h3><p>'+esc(s.location||'Қала орталығындағы жоспарлық нүкте; қонақүй немесе автотұрақ мекенжайы емес.')+'</p><div class="geo-coordinates"><span>WGS84 · нысан нүктесі</span><code>'+s.lat.toFixed(6)+'° N, '+s.lon.toFixed(6)+'° E</code></div><div class="passport-actions"><a href="'+SRT.mapLink(s)+'" target="_blank" rel="noopener">OSM-та ашу</a>'+(s.source?'<a href="'+s.source+'" target="_blank" rel="noopener">'+s.sourceName+'</a>':'')+'<a href="./routes.html?add='+s.id+'">Маршрутқа қосу</a></div><p class="geo-site-footer">Нысан нүктесі мен автокөлік кіреберісі сәйкес келмеуі мүмкін. Жаяу кіретін жолды сапар алдында нақтылаңыз.</p>'+(s.city?'<a href="./city-'+s.city+'.html">Қала тарихы мен бару паспорты</a>':'');}
+ function select(id,zoom=true){siteInfo(id);if(map){const s=placeById[id];if(zoom)map.flyTo([s.lat,s.lon],14,{duration:.6,animate:!matchMedia('(prefers-reduced-motion: reduce)').matches});markers.get(id)?.openPopup();}else{const s=placeById[id],frame=$('fallbackMapFrame');if(frame)frame.src='https://www.openstreetmap.org/export/embed.html?bbox='+[s.lon-.02,s.lat-.012,s.lon+.02,s.lat+.012].join('%2C')+'&layer=mapnik&marker='+s.lat+'%2C'+s.lon;}}
+ function visibleSites(){const region=$('mapRegion').value;return all.filter(s=>(!s.transit||SRT.ids().includes(s.id))&&(region==='all'||(s.city&&byId[s.city].region===region)));}
+ function list(){const visible=visibleSites();$('geoCityList').innerHTML=visible.map(s=>'<button type="button" data-geo-site="'+s.id+'" aria-pressed="'+(s.id===chosen)+'">'+esc(s.name)+'</button>').join('');if(map)all.forEach(s=>{const m=markers.get(s.id);if(visible.includes(s)){if(!map.hasLayer(m))m.addTo(map)}else if(map.hasLayer(m))map.removeLayer(m)});}
+ if(typeof window.L!=='undefined'){
+  map=L.map(el,{scrollWheelZoom:true,minZoom:3,maxZoom:19});L.control.scale({imperial:false}).addTo(map);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,noWrap:true,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'}).addTo(map).on('tileload',()=>$('mapLoadState').classList.add('loaded')).on('tileerror',()=>{$('mapLoadState').textContent='Карта қабаты жүктелмеді. Аялдамалар тізімі мен есеп қолжетімді.';});
+  all.forEach((s,i)=>{const m=L.marker([s.lat,s.lon],{title:s.name,alt:s.name,icon:L.divIcon({className:'geo-pin-icon',html:'<div class="route-marker '+(s.transit?'transit':'')+'">'+(i+1)+'</div>',iconSize:[30,30]})});m.bindPopup('<strong>'+esc(s.name)+'</strong><br><a href="'+SRT.mapLink(s)+'" target="_blank" rel="noopener">Нысанды ашу</a>');m.on('click',()=>select(s.id,false));markers.set(s.id,m);});map.fitBounds([[40.55,46.4],[55.45,87.4]]);
+ }else{el.innerHTML='<iframe id="fallbackMapFrame" class="map-fallback-frame" title="Нысан картасы" src="https://www.openstreetmap.org/export/embed.html?bbox=46.4%2C40.5%2C87.4%2C55.5&layer=mapnik"></iframe>';$('mapLoadState').textContent='Картаның жеңіл көрінісі. Автожол есептері төмендегі кестеде көрсетіледі.';}
+ function draw(item){if(!map)return;if(routeLine)map.removeLayer(routeLine);routeLine=L.geoJSON(item.data.routes[0].geometry,{style:{color:'#185c83',weight:5,opacity:.9}}).addTo(map);if(params.has('city'))select(chosen);else map.fitBounds(routeLine.getBounds(),{padding:[35,35]});}
+ function update(refresh=false){const ticket=++requestVersion,plan=SRT.state,ids=SRT.ids(plan);$('mapEditRoute').href=SRT.href('routes.html');$('mapCalculate').href=SRT.href('calculator.html');$('mapRoutePath').textContent=ids.map(id=>placeById[id].name).join(' → ');$('mapRoadLegs').innerHTML='';if(routeLine&&map){map.removeLayer(routeLine);routeLine=null;}list();
+  if(ids.length<2){$('mapRouteSummary').textContent='Маршрут үшін кемінде екі нысанды таңдаңыз.';return;}
+  function paint(item){if(ticket!==requestVersion)return;const km=item.data.routes[0].distance/1000,t=SRT.total(km,plan);$('mapRouteSummary').innerHTML='<div class="road-metrics"><div><strong>'+km.toFixed(1)+' км</strong><span>автожол желісі</span></div><div><strong>'+fmtHours(t.road)+'</strong><span>таза жүріс · '+plan.speed+' км/сағ</span></div><div><strong>'+fmtHours(t.total)+'</strong><span>жол, үзіліс, нысан аралау</span></div></div><button id="mapRefreshRoad" class="outline-btn" type="button">Жол есебін жаңарту</button>';$('mapRoadLegs').innerHTML=SRT.legs(item,plan);$('mapRefreshRoad').onclick=()=>update(true);draw(item);}
+  const hit=SRT.cached(ids);if(hit&&!refresh){paint(hit);return;}$('mapRouteSummary').textContent='Автожол бағыты есептелуде…';SRT.route(ids,refresh).then(paint).catch(()=>{if(ticket!==requestVersion)return;$('mapRouteSummary').innerHTML='<p class="map-error">Жол сервисі қазір қолжетімсіз. Нысан белгілері көрсетілген; автожол сызығы мен қашықтық есептелген жоқ.</p><button id="mapRetryRoad" type="button" class="outline-btn">Қайта есептеу</button>';$('mapRetryRoad').onclick=()=>update(true);});
  }
- function info(){
-  const s=names[chosen],c=byId[chosen];
-  document.getElementById('mapDetail').innerHTML='<div class="map-small">'+c.regionLabel+' · '+c.kind+'</div><h3>'+c.name+'</h3><div class="geo-site-name">'+s.label+'</div><p>'+c.role+'</p><div class="geo-coordinates"><span>НЫСАННЫҢ КООРДИНАТАСЫ · WGS84</span><code>'+s.lat.toFixed(6)+'° N, '+s.lon.toFixed(6)+'° E</code></div><a class="geo-marker-source-link" href="'+s.source+'" target="_blank" rel="noopener noreferrer">'+s.sourceName+' <svg class="ui-icon ui-icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a><p>'+c.visit+'</p><div class="detail-actions"><a class="outline-btn" href="./city-'+c.id+'.html">Қала тарихы <svg class="ui-icon ui-icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a><a class="outline-btn" href="'+osmLink(s)+'" target="_blank" rel="noopener noreferrer">OSM-та ашу <svg class="ui-icon ui-icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a></div><p class="geo-site-footer">Белгі осы нысанға қатысты. Карточкадағы басқа кесенелер мен музейлер бөлек жерде болуы мүмкін.</p>';
-  renderList()
- }
- function markerIcon(s){return L.divIcon({className:'geo-pin-icon',html:'<span class="geo-pin-dot '+(chosen===s.id?'selected':'')+'">'+(sites.indexOf(s)+1)+'</span>',iconSize:[28,28],iconAnchor:[14,14],popupAnchor:[0,-14]})}
- function selectSite(id,focus=true){
-  if(!names[id])return;chosen=id;info();
-  if(map){sites.forEach(s=>markers.get(s.id)?.setIcon(markerIcon(s)));const s=names[id],m=markers.get(id);if(focus){buttonMode('mapSelected');map.flyTo([s.lat,s.lon],14,{animate:animate,duration:.7})}if(m&&map.hasLayer(m))m.openPopup()}
-  else{const frame=document.getElementById('fallbackMapFrame'),s=names[id];if(frame)frame.src='https://www.openstreetmap.org/export/embed.html?bbox='+[s.lon-.035,s.lat-.02,s.lon+.035,s.lat+.02].join('%2C')+'&layer=mapnik&marker='+s.lat+'%2C'+s.lon}
- }
- info();
- document.getElementById('geoCityList').addEventListener('click',e=>{const b=e.target.closest('[data-geo-site]');if(b)selectSite(b.dataset.geoSite)});
- if(typeof window.L==='undefined'){
-  el.innerHTML='<iframe id="fallbackMapFrame" class="map-fallback-frame" title="Қазақстанның OpenStreetMap картасы" src="https://www.openstreetmap.org/export/embed.html?bbox=46.4%2C40.5%2C87.4%2C55.5&layer=mapnik"></iframe>';state.classList.add('error');state.innerHTML='Картаның жеңіл көрінісі. Тізімнен нысанды таңдаңыз немесе <a href="https://www.openstreetmap.org/#map=5/48.2/67.1" target="_blank" rel="noopener">OSM-та ашыңыз <svg class="ui-icon ui-icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a>';['mapFullCountry','mapAllSites','mapSelected','mapFullscreen','mapRegion'].forEach(id=>document.getElementById(id).disabled=true);return
- }
- map=L.map(el,{zoomControl:false,scrollWheelZoom:true,minZoom:3,maxZoom:19,worldCopyJump:true,zoomSnap:.25,zoomAnimation:animate,fadeAnimation:animate,markerZoomAnimation:animate});
- L.control.zoom({position:'topleft',zoomInTitle:'Жақындату',zoomOutTitle:'Алыстату'}).addTo(map);
- L.control.scale({imperial:false,position:'bottomleft'}).addTo(map);
- map.attributionControl.setPrefix('<a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a>');
- const tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,noWrap:true,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>'}).addTo(map);
- let tileSucceeded=false,tileFailures=0;
- tiles.on('tileload',()=>{tileSucceeded=true;state.classList.add('loaded')});
- tiles.on('tileerror',()=>{tileFailures++;if(!tileSucceeded&&tileFailures>=3){state.classList.add('error');state.innerHTML='Карта қабаты жүктелмеді. Интернетті тексеріңіз немесе <a href="https://www.openstreetmap.org/#map=5/48.2/67.1" target="_blank" rel="noopener">OSM-та ашыңыз <svg class="ui-icon ui-icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a>'}});
- map.fitBounds(nationalBounds,{padding:[15,20]});buttonMode('mapFullCountry');
- sites.forEach(s=>{
-  const c=byId[s.id],m=L.marker([s.lat,s.lon],{icon:markerIcon(s),title:c.name+': '+s.label,alt:c.name+': '+s.label,keyboard:true,riseOnHover:true});
-  m.bindTooltip(c.name,{direction:'top',offset:[0,-15]});
-  m.bindPopup('<b>'+c.name+'</b>'+s.label+'<br><a href="./city-'+c.id+'.html">Қала парағын ашу <svg class="ui-icon ui-icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a>');
-  m.on('click',()=>selectSite(s.id,false));m.addTo(map);markers.set(s.id,m)
- });
- function fitSites(){const points=visible().map(s=>[s.lat,s.lon]);if(points.length)map.fitBounds(points,{padding:[40,40],maxZoom:10});buttonMode('mapAllSites')}
- document.getElementById('mapFullCountry').addEventListener('click',()=>{map.fitBounds(nationalBounds,{padding:[15,20]});buttonMode('mapFullCountry')});
- document.getElementById('mapAllSites').addEventListener('click',fitSites);
- document.getElementById('mapSelected').addEventListener('click',()=>selectSite(chosen));
- document.getElementById('mapRegion').addEventListener('change',e=>{
-  region=e.target.value;const shown=visible();sites.forEach(s=>{const m=markers.get(s.id),show=shown.includes(s);if(show&&!map.hasLayer(m))m.addTo(map);if(!show&&map.hasLayer(m))map.removeLayer(m)});
-  if(!shown.some(s=>s.id===chosen)&&shown[0])selectSite(shown[0].id,false);renderList();fitSites()
- });
- const full=document.getElementById('mapFullscreen'),stage=document.getElementById('mapStage');
- function fullView(on){stage.classList.toggle('map-fullscreen',on);full.setAttribute('aria-pressed',String(on));full.setAttribute('aria-label',on?'Толық экраннан шығу':'Картаны толық экранға үлкейту');full.textContent=on?'×':'⛶';setTimeout(()=>map.invalidateSize(),80)}
- full.addEventListener('click',()=>fullView(!stage.classList.contains('map-fullscreen')));
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&stage.classList.contains('map-fullscreen'))fullView(false)});
- if(names[params.get('city')])selectSite(chosen);
- window.addEventListener('resize',()=>map.invalidateSize());
+ $('mapRouteChoice').onchange=e=>{params.delete('city');SRT.save({kind:e.target.value,visit:null});update();};$('mapRouteSpeed').onchange=e=>{SRT.save({speed:e.target.value});e.target.value=SRT.state.speed;update();};
+ $('geoCityList').onclick=e=>{const b=e.target.closest('[data-geo-site]');if(b)select(b.dataset.geoSite);};$('mapRegion').onchange=list;
+ $('mapFullCountry').onclick=()=>map?.fitBounds([[40.55,46.4],[55.45,87.4]]);$('mapAllSites').onclick=()=>{const a=visibleSites();if(map&&a.length)map.fitBounds(a.map(s=>[s.lat,s.lon]),{padding:[35,35]});};$('mapSelected').onclick=()=>select(chosen);
+ $('mapFullscreen').onclick=()=>{const on=$('mapStage').classList.toggle('map-fullscreen');$('mapFullscreen').setAttribute('aria-pressed',String(on));setTimeout(()=>map?.invalidateSize(),80);};document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('mapStage').classList.remove('map-fullscreen');$('mapFullscreen').setAttribute('aria-pressed','false');map?.invalidateSize();}});
+ siteInfo(chosen);list();update();if(params.has('city'))select(chosen);window.addEventListener('resize',()=>map?.invalidateSize());
 })();

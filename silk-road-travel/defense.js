@@ -51,6 +51,7 @@
 
   function selectRoute(id) {
     const route = presets[id];
+    const link=document.getElementById('defenseRoadLink');if(link)link.href=SRT.href('map.html',{...SRT.state,kind:id,visit:null});
     if (!route) return;
     routeButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.defenseRoute === id)));
     document.getElementById('scopeDays').textContent = String(route.days);
@@ -119,3 +120,4 @@
   renderComparison();
   stageFromHash();
 })();
+

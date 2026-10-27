@@ -7,9 +7,9 @@
   <meta name="description" content="Silk Road Travel жобасын интерактивті тақтада қорғауға арналған бес кезеңді таныстырылым.">
   <title>Жобаны қорғау — Silk Road Travel</title>
   <link rel="stylesheet" href="./defense.css?v=20261016-defense">
-  <script src="./travel-data.js?v=20261016-defense" defer></script>
-  <script src="./defense.js?v=20261016-defense" defer></script>
-</head>
+  <script src="./travel-data.js?v=20261016-defense" defer></script><script src="./site-data.js?v=20261027-planner" defer></script><script src="./planner-core.js?v=20261027-planner" defer></script>
+  <script src="./defense.js?v=20261027-planner" defer></script>
+<link rel="stylesheet" href="./planner.css?v=20261027-planner"></head>
 <body>
   <a class="skip-link" href="#presentation">Мазмұнға өту</a>
   <div class="defense-shell">
@@ -43,7 +43,7 @@
           <div>
             <p class="project-name">SILK ROAD TRAVEL</p>
             <h1 id="goalTitle">Тарихты таны.<br><em>Бағытыңды таңда.</em></h1>
-            <p class="lead">Ұлы Жібек жолының тарихи мұрасын туристік маршрут арқылы таныту.</p>
+            <p class="lead">Ұлы Жібек жолының тарихи мұрасын туристік маршрут арқылы таныту.</p><p class="stage-note">Бақтыгерей Дана · Алламберген Камшат<br>№3 Қарауылкелді орта мектебі · 7-сынып<br>Жетекшісі: Аккожаева Самал Кожагалиевна</p>
           </div>
           <div class="goal-card">
             <span class="card-label">ЗЕРТТЕУ МАҚСАТЫ</span>
@@ -81,7 +81,7 @@
         </div>
         <p class="route-path" id="scopePath">Түркістан → Отырар → Түркістан</p>
         <p class="route-warning" id="scopeWarning"></p>
-        <p class="stage-note"><strong>Жоспарлық модель.</strong> Қашықтықтар — жобадағы есептік шамалар, нақты автожол өлшемдері емес.</p>
+        <p><a id="defenseRoadLink" href="./map.html?route=short">Осы нұсқаның автожол есебін картадан ашу</a></p><p class="stage-note"><strong>Жоспарлық модель.</strong> Қашықтықтар — жобадағы есептік шамалар, нақты автожол өлшемдері емес.</p>
       </section>
 
       <section id="salystyru" class="stage" aria-labelledby="compareTitle" tabindex="-1" hidden>
@@ -132,3 +132,4 @@
   <p id="fullscreenStatus" class="sr-only" role="status" aria-live="polite"></p>
 </body>
 </html>
+

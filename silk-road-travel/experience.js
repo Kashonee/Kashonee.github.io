@@ -47,58 +47,6 @@
   $('#mapReset').addEventListener('click',()=>{zoom=1;setZoom()});
   if(byId[params.get('city')]){selectedCity=params.get('city');renderMap()}
  }
- if($('#routeResult')){
-  const prior=readStore('srt-route',{kind:'short',custom:[]});
-  selectedRoute=presets[params.get('route')]?params.get('route'):(presets[prior.kind]||prior.kind==='custom'?prior.kind:'short');
-  custom=(prior.custom||[]).filter(id=>byId[id]);
-  if(byId[params.get('add')]){selectedRoute='custom';if(!custom.includes(params.get('add')))custom.push(params.get('add'))}
-  const originalBuilder=renderBuilder;
-  renderBuilder=function(){
-   originalBuilder();
-   const p=presets[selectedRoute];
-   if(p){
-    const names={short:['Сәулет пен археология'],medium:['Сайрам және Түркістан','Түркістан және Отырар','Шымкентке оралу'],long:['Рухани Түркістан','Отырар алқабы','Сайрамнан Таразға','Талас қалалық мәдениеті','Алматыға ұзақ жол','Талхир мен Жетісу','Қаялық және Талдықорған']};
-    $$('.day-card').forEach((d,i)=>{d.innerHTML='<details '+(i===0?'open':'')+'><summary><span>'+p.schedule[i][0]+'</span>'+names[selectedRoute][i]+'</summary><p>'+p.schedule[i][1]+'</p></details>'})
-   }else{
-    $('#selectedCities').innerHTML=custom.length?custom.map((id,i)=>'<div><span>'+(i+1)+'. '+byId[id].name+'</span><button type="button" data-order="'+i+'" data-direction="-1" '+(i===0?'disabled':'')+' aria-label="'+byId[id].name+' қаласын алға жылжыту">↑</button><button type="button" data-order="'+i+'" data-direction="1" '+(i===custom.length-1?'disabled':'')+' aria-label="'+byId[id].name+' қаласын кейін жылжыту">↓</button><button type="button" data-remove="'+id+'" aria-label="'+byId[id].name+' қаласын маршруттан алу">×</button></div>').join(''):'<span class="placeholder">Қалаларды сапар ретімен таңдаңыз</span>'
-   }
-   writeStore('srt-route',{kind:selectedRoute,custom});
-   const link=$('.route-actions a');if(link)link.href=selectedRoute==='custom'?'./calculator.html?distance='+customDistance():'./calculator.html?route='+selectedRoute;
-  };
-  renderBuilder();
-  document.addEventListener('click',e=>{
-   const b=e.target.closest('[data-order]');
-   if(b){const i=Number(b.dataset.order),j=i+Number(b.dataset.direction);if(j>=0&&j<custom.length){[custom[i],custom[j]]=[custom[j],custom[i]];renderBuilder()}}
-   const remove=e.target.closest('[data-remove]');if(remove){custom=custom.filter(id=>id!==remove.dataset.remove);renderBuilder()}
-  });
-  $('#exportRoute').addEventListener('click',()=>{
-   const p=presets[selectedRoute],km=p?p.distance:customDistance();
-   if(!p&&custom.length<2){notify('Маршрутқа кемінде екі қала қосыңыз');return}
-   const list=p?p.detail:custom.map(id=>byId[id].name).join(' → ');
-   const itinerary=p?p.schedule.map(x=>x[0]+': '+x[1]).join('\n'):'Қалалардың реті: '+list;
-   const text='SILK ROAD TRAVEL\n\n'+(p?p.name:'Өз бағытым')+'\n'+list+'\n\nЖоспарлық аралық: '+km+' км\nТаза жол уақыты: '+fmtHours(km/speed)+' ('+speed+' км/сағ)\n\n'+itinerary+'\n\nЕСКЕРТУ\nЖол көрсеткіштері — жоспарлық модель, нақты автожол өлшемі емес. Сапар алдында кіру шартын, жолды және ауа райын тексеріңіз.\n';
-   const blob=new Blob([text],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Silk_Road_Travel_marshrut.txt';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);notify('Маршрут мәтін файлы ретінде жүктелді')
-  })
- }
- if($('#calcOutput')){
-  const names={short:'1 күндік бағдар',medium:'3 күндік бағдар',long:'7 күндік бағдар'};
-  const qroute=params.get('route'),qdistance=Number(params.get('distance'));
-  if(presets[qroute])$('#calcRoute').value=qroute;
-  if(qdistance>0&&qdistance<=5000){$('#calcRoute').value='custom';$('#calcDistance').value=Math.round(qdistance)}
-  const defaults={short:4,medium:11,long:22,custom:4};
-  function calculate(resetVisit=false){
-   const kind=$('#calcRoute').value,p=presets[kind];$('#customKmWrap').hidden=kind!=='custom';
-   if(resetVisit)$('#calcVisit').value=defaults[kind];
-   const km=p?p.distance:Number($('#calcDistance').value),v=Number($('#calcSpeed').value),visit=Number($('#calcVisit').value),pause=Number($('#calcBreak').value);
-   $('#calcSpeedText').textContent=v+' км/сағ';$('#calcVisitText').textContent=visit+' сағ';$('#calcBreakText').textContent=pause+' мин';
-   if(!Number.isFinite(km)||km<1||km>5000){$('#calcOutput').innerHTML='<div class="calc-error">Қашықтықты 1–5000 км аралығында енгізіңіз.</div>';return}
-   const road=km/v,breaks=Math.floor(road/2)*pause/60,total=road+breaks+visit,a=road/total*360,b=(road+visit)/total*360;
-   $('#calcOutput').innerHTML='<div class="calc-kicker">'+(names[kind]||'ӨЗ ҚАШЫҚТЫҒЫҢЫЗ')+' · '+km+' КМ</div><div class="time-wheel" style="--road-angle:'+a+'deg;--visit-angle:'+b+'deg;--break-angle:360deg"><div><strong>'+fmtHours(total)+'</strong><span>белсенді сапардың болжамды уақыты</span></div></div><div class="calc-result-lines"><div><span>Таза жол</span><b>'+fmtHours(road)+'</b></div><div><span>Нысандармен танысу</span><b>'+fmtHours(visit)+'</b></div><div><span>Жолдағы үзілістер</span><b>'+fmtHours(breaks)+'</b></div></div><p class="calc-disclaimer">8 сағаттық белсенді күнге шартты бөлсек: '+Math.max(1,Math.ceil(total/8))+' күн. Бұл түнеу мен нақты нысандардың жұмыс уақытын ескермейді. Қашықтық — жоспарлық модель.</p>'
-  }
-  $('#calcRoute').addEventListener('change',()=>calculate(true));
-  ['calcDistance','calcSpeed','calcVisit','calcBreak'].forEach(id=>$('#'+id).addEventListener('input',()=>calculate()));
-  calculate(true)
- }
  if($('#virtualCard')){
   renderVirtual=function(){
    const c=cities[virtualIndex],photo=cityImage(c);
@@ -120,3 +68,4 @@
   renderQuiz();best()
  }
 })();
+
