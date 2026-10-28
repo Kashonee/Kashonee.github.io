@@ -1,13 +1,66 @@
 'use strict';
 const byId=Object.fromEntries(cities.map(c=>[c.id,c]));
 const sourceItems=[
- ['UNESCO · Ясауи кесенесі','https://whc.unesco.org/en/list/1103/'],
- ['UNESCO · Чанъань–Тянь-Шань дәлізі','https://whc.unesco.org/en/list/1442/'],
- ['Archaeology.kz · Отырар','https://archaeology.kz/heritages/244-otyrar-zhane-otyrar-alqaby'],
- ['Archaeology.kz · Тараз','https://archaeology.kz/heritages/633-taraz-qalasy'],
- ['Киелі Қазақстан · Сайрам','https://oq.gov.kz/ru/abai/sayram-ispiddgab'],
- ['Archaeology.kz · Талғар','https://archaeology.kz/heritages/65-talgar-talhir-qalasy'],
- ['Archaeology.kz · Қойлық','https://archaeology.kz/heritages/61-qoilyq-kayalyk-qalasy']
+ [
+  "UNESCO · Ясауи кесенесі",
+  "https://whc.unesco.org/en/list/1103/"
+ ],
+ [
+  "UNESCO · Жібек жолы дәлізі",
+  "https://whc.unesco.org/en/list/1442/"
+ ],
+ [
+  "UNESCO · Талғар және Қаялық",
+  "https://whc.unesco.org/en/list/1442/maps/"
+ ],
+ [
+  "«Әзірет Сұлтан» · Тайқазан",
+  "https://azretsultan.kz/taj-azan-hiv/"
+ ],
+ [
+  "Archaeology.kz · Отырар",
+  "https://archaeology.kz/heritages/244-otyrar-zhane-otyrar-alqaby"
+ ],
+ [
+  "Archaeology.kz · Арыстан баб",
+  "https://archaeology.kz/heritages/217-arystan-bab-kesene-meshiti"
+ ],
+ [
+  "Archaeology.kz · Тараз",
+  "https://archaeology.kz/heritages/633-taraz-qalasy"
+ ],
+ [
+  "«Ежелгі Тараз» · Айша бибі",
+  "https://ezhelgi-taraz.kz/kk/page/ajsha-bibi-kesenesi-xi-xiivv"
+ ],
+ [
+  "«Ежелгі Тараз» · Қарахан",
+  "https://ezhelgi-taraz.kz/kk/page/arakhan-kesenesi-khi-khii"
+ ],
+ [
+  "«Ежелгі Тараз» · Бабаджа хатун",
+  "https://www.ezhelgi-taraz.kz/kk/page/babadzha-khatun-kesenesi-khi"
+ ],
+ [
+  "Abai Instituty · Сайрам",
+  "https://oq.gov.kz/ru/abai/sayram-ispiddgab"
+ ],
+ [
+  "Kazakhstan.travel · Қарашаш ана",
+  "https://kazakhstan.travel/kz/attractions/473"
+ ],
+ [
+  "Kazakhstan.travel · Ибраһим ата",
+  "https://kazakhstan.travel/kz/attractions/474"
+ ],
+ [
+  "Archaeology.kz · Талхир",
+  "https://archaeology.kz/heritages/65-talgar-talhir-qalasy"
+ ],
+ [
+  "Archaeology.kz · Қаялық",
+  "https://archaeology.kz/heritages/61-qoilyq-kayalyk-qalasy"
+ ]
 ];
 const quiz=[
  {q:'Қожа Ахмет Ясауи кесенесі қай қалада орналасқан?',choices:['Түркістан','Тараз','Талғар'],answer:0,why:'Кесене Түркістанда орналасқан және UNESCO тізіміне жеке нысан ретінде енген.'},
