@@ -5,7 +5,7 @@ const SRT = (()=>{
  const safeWrite=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value))}catch{}};
  const clamp=(v,min,max,fallback)=>Number.isFinite(Number(v))&&v!==null&&v!==''?Math.min(max,Math.max(min,Number(v))):fallback;
  const defaults={kind:'short',stops:[],speed:55,visit:null,pause:20,round:false,timeMode:'road'};
- function normalize(value={}){return{kind:Object.hasOwn(presets,value.kind)||value.kind==='custom'?value.kind:'short',stops:Array.isArray(value.stops)?value.stops.filter(id=>Object.hasOwn(placeById,id)).slice(0,16):[],speed:Math.round(clamp(value.speed,20,140,55)/5)*5,visit:value.visit===null||value.visit===undefined?null:clamp(value.visit,0,48,0),pause:clamp(value.pause,0,60,20),round:value.round===true,timeMode:value.timeMode==='manual'?'manual':'road'};}
+ function normalize(value={}){return{kind:Object.hasOwn(presets,value.kind)||value.kind==='custom'?value.kind:'short',stops:Array.isArray(value.stops)?value.stops.filter(id=>Object.hasOwn(placeById,id)).slice(0,16):[],speed:Math.round(clamp(value.speed,20,140,55)),visit:value.visit===null||value.visit===undefined?null:clamp(value.visit,0,48,0),pause:clamp(value.pause,0,60,20),round:value.round===true,timeMode:value.timeMode==='manual'?'manual':'road'};}
  const old=safeRead('srt-route',{});
  let state=normalize(safeRead(storageKey,safeRead('srt-plan-v2',{...defaults,kind:old?.kind||'short',stops:old?.custom||[]})));
  const query=new URLSearchParams(location.search);

@@ -47,25 +47,4 @@
   $('#mapReset').addEventListener('click',()=>{zoom=1;setZoom()});
   if(byId[params.get('city')]){selectedCity=params.get('city');renderMap()}
  }
- if($('#virtualCard')){
-  renderVirtual=function(){
-   const c=cities[virtualIndex],photo=cityImage(c);
-   $('#virtualSteps').innerHTML=cities.map((v,i)=>'<button class="'+(i===virtualIndex?'active':'')+'" type="button" data-virtual="'+i+'" aria-label="'+v.name+' аялдамасына өту">'+String(i+1).padStart(2,'0')+'</button>').join('');
-   $('#virtualCard').innerHTML='<div class="tour-photo"'+(photo?' style="background-image:url(&quot;'+photo+'&quot;)"':'')+'></div><div class="tour-shade"></div><span class="tour-ornament" aria-hidden="true"><svg class="ui-icon ui-icon-compass" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 2l2.6 9.4L26 6l-5.4 7.4L30 16l-9.4 2.6L26 26l-7.4-5.4L16 30l-2.6-9.4L6 26l5.4-7.4L2 16l9.4-2.6L6 6l7.4 5.4L16 2Z"/><circle cx="16" cy="16" r="1.7" fill="currentColor" stroke="none"/></svg></span><div class="tour-text"><small>АЯЛДАМА '+String(virtualIndex+1).padStart(2,'0')+' / 06 · '+c.regionLabel+'</small><h2>'+c.name+'</h2><p>'+c.role+'</p><div class="tour-focus"><strong>МАҢЫЗДЫ ДЕРЕК</strong><p>'+c.fact+'</p></div><a href="./city-'+c.id+'.html">Қаланың толық тарихын ашу <svg class="ui-icon ui-icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a></div><div class="tour-bottom"><span>'+c.kind+' · '+c.status+'</span><div class="virtual-nav"><button type="button" data-step="-1" aria-label="Алдыңғы аялдама" '+(virtualIndex===0?'disabled':'')+'>←</button><button type="button" data-step="1" aria-label="Келесі аялдама" '+(virtualIndex===cities.length-1?'disabled':'')+'>→</button></div></div><div class="tour-credit">'+(c.photoPage?c.photoSubject+' · '+photoAttribution(c):'Көркем фон · фотосурет немесе реконструкция емес')+'</div>'
-  };
-  renderVirtual();
-  document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)||$('#cityDialog').open)return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();virtualIndex=Math.max(0,Math.min(cities.length-1,virtualIndex+(e.key==='ArrowRight'?1:-1)));renderVirtual()}})
- }
- if($('#quizPanel')){
-  let answers=[];
-  const originalQuiz=renderQuiz;
-  function best(){const score=readStore('srt-quiz-best',null);if($('#bestScore'))$('#bestScore').textContent=score===null?'Ең жақсы нәтиже әлі жоқ':'Ең жақсы нәтиже: '+score+' / '+quiz.length}
-  renderQuiz=function(){
-   originalQuiz();$('#quizPanel').style.setProperty('--quiz-progress',Math.min(100,(quizIndex+1)/quiz.length*100)+'%');
-   if(quizIndex>=quiz.length){const old=readStore('srt-quiz-best',0);writeStore('srt-quiz-best',Math.max(old,quizScore));best();const review=document.createElement('div');review.className='quiz-review';review.innerHTML='<strong>Есіңде сақта</strong>'+quiz.map((q,i)=>'<p>'+(answers[i]===q.answer?'✓':'○')+' '+q.why+'</p>').join('');$('#quizPanel').append(review)}
-  };
-  document.addEventListener('click',e=>{const b=e.target.closest('[data-answer]');if(b)answers[quizIndex]=Number(b.dataset.answer);if(e.target.closest('[data-quiz-reset]'))answers=[]});
-  renderQuiz();best()
- }
 })();
-

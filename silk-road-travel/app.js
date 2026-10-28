@@ -62,14 +62,7 @@ const sourceItems=[
   "https://archaeology.kz/heritages/61-qoilyq-kayalyk-qalasy"
  ]
 ];
-const quiz=[
- {q:'Қожа Ахмет Ясауи кесенесі қай қалада орналасқан?',choices:['Түркістан','Тараз','Талғар'],answer:0,why:'Кесене Түркістанда орналасқан және UNESCO тізіміне жеке нысан ретінде енген.'},
- {q:'Талхир қалашығы бүгінгі қай қаламен байланысты?',choices:['Отырар','Талғар','Сайрам'],answer:1,why:'Талхир — қазіргі Талғар аумағымен байланысты археологиялық нысан.'},
- {q:'Отырар қалашығы мен Арыстанбаб кесенесі туралы қайсысы дұрыс?',choices:['Екеуі бір ғимарат','Екі бөлек нысан','Таразда орналасқан'],answer:1,why:'Екеуі Отырар өңірімен байланысты, бірақ бір жерде орналасқан жалғыз ескерткіш емес.'},
- {q:'Қойлық пен Талғардың UNESCO мәртебесі қалай беріледі?',choices:['Түгел қазіргі қалаларға','Жібек жолы дәлізінің құрамдас нысандарына','Барлық көрші ауылдарға'],answer:1,why:'Қаялық пен Талхир — Чанъань–Тянь-Шань дәлізінің құрамдас археологиялық орындары.'},
- {q:'Жоспардағы 430 км нені білдіреді?',choices:['3 күндік маршруттың есептік ұзындығын','Кесенелер арасындағы жаяу жолды','Автожолдың дәл өлшенген ұзындығын'],answer:0,why:'430 км — жоба авторларының 3 күндік бағдарға жасаған жоспарлық қосындысы.'}
-];
-let selectedCity='turkestan', selectedRoute='short', custom=[], speed=55, virtualIndex=0, quizIndex=0, quizScore=0, chosenAnswer=null;
+let selectedCity='turkestan', selectedRoute='short', custom=[];
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 function cityImage(c){return c.photoUrl||(c.photo?'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(c.photo)+'?width=1280':'')}
 function photoAttribution(c){if(!c.photoPage)return '';return '<a href="'+c.photoPage+'" target="_blank" rel="noopener noreferrer">'+c.credit+'</a>'+(c.photoLicense?' · <a href="'+c.photoLicense+'" target="_blank" rel="noopener noreferrer">Лицензия</a>':'')+(c.photoTerms?' · <a href="'+c.photoTerms+'" target="_blank" rel="noopener noreferrer">Пайдалану шарты</a>':'');}
@@ -82,8 +75,6 @@ function renderMap(){const c=byId[selectedCity];renderPins();$('#mapDetail').inn
 function showCity(id){const c=byId[id];if(!c)return;const d=$('#cityDialog');$('#dialogContent').innerHTML=visual(c,'dialog-visual')+'<div class="dialog-body"><div class="kicker">'+c.regionLabel+' · '+c.kind+'</div><h2>'+c.name+'</h2><p>'+c.role+'</p><h3>Нені білу маңызды?</h3><p>'+c.fact+'</p><h3>Сапарға жоспар</h3><p>'+c.visit+'</p><p class="dialog-note">'+c.status+' · Нысанның кіру жағдайын сапар алдында нақтылаңыз.</p><p><a target="_blank" rel="noopener noreferrer" href="'+c.source+'">Тарихи дереккөз <svg class="ui-icon ui-icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a>'+(c.photoPage?' · <a target="_blank" rel="noopener noreferrer" href="'+c.photoPage+'">Фото: '+c.credit+' <svg class="ui-icon ui-icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a>':'')+'</p></div>';d.showModal()}
 // journey.js installs the shared automotive planner after this base UI loads.
 function renderBuilder(){const result=$('#routeResult');if(result)result.innerHTML='<p role="status">Автомобиль жоспары жүктелуде…</p>'}
-function renderVirtual(){const c=cities[virtualIndex];$('#virtualSteps').innerHTML=cities.map((v,i)=>'<button class="'+(i===virtualIndex?'active':'')+'" type="button" data-virtual="'+i+'" aria-label="'+v.name+' кезеңіне өту">'+String(i+1).padStart(2,'0')+'</button>').join('');$('#virtualCard').innerHTML='<div class="virtual-art"><span class="symbol"><svg class="ui-icon ui-icon-compass" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 2l2.6 9.4L26 6l-5.4 7.4L30 16l-9.4 2.6L26 26l-7.4-5.4L16 30l-2.6-9.4L6 26l5.4-7.4L2 16l9.4-2.6L6 6l7.4 5.4L16 2Z"/><circle cx="16" cy="16" r="1.7" fill="currentColor" stroke="none"/></svg></span><span>КӨРКЕМ САНДЫҚ БЕЙНЕ · ФОТО ЕМЕС</span></div><div class="virtual-text"><small>АЯЛДАМА '+String(virtualIndex+1).padStart(2,'0')+' / 06</small><h3>'+c.name+'</h3><p>'+c.role+'</p><p class="focus-fact">'+c.fact+'</p><div class="virtual-nav"><button type="button" data-step="-1" aria-label="Алдыңғы қала" '+(virtualIndex===0?'disabled':'')+'>←</button><button type="button" data-step="1" aria-label="Келесі қала" '+(virtualIndex===cities.length-1?'disabled':'')+'>→</button></div></div>'}
-function renderQuiz(){const el=$('#quizPanel');if(quizIndex>=quiz.length){el.innerHTML='<div class="quiz-progress">МАРШРУТ АЯҚТАЛДЫ</div><h3>Жарайсың! Қалаларды қаншалықты таныдың?</h3><div class="quiz-score">'+quizScore+' / '+quiz.length+' <small>дұрыс жауап</small></div><p>Жауаптардың түсіндірмесін есіңе түсіріп, қала карточкаларын қайта қарап шық.</p><button class="quiz-next" data-quiz-reset type="button">Қайта бастау ↺</button>';return}let q=quiz[quizIndex];el.innerHTML='<div class="quiz-progress">СҰРАҚ '+(quizIndex+1)+' / '+quiz.length+'</div><h3>'+q.q+'</h3><div class="answers">'+q.choices.map((v,i)=>'<button type="button" data-answer="'+i+'" '+(chosenAnswer!==null?'disabled class="'+(i===q.answer?'correct':i===chosenAnswer?'wrong':'')+'"':'')+'>'+String.fromCharCode(65+i)+'. '+v+'</button>').join('')+'</div>'+(chosenAnswer!==null?'<div class="quiz-feedback">'+(chosenAnswer===q.answer?'Дұрыс! ':'Әзірше қате. ')+q.why+'</div><button class="quiz-next" type="button" data-quiz-next>'+(quizIndex===quiz.length-1?'Нәтижені көру':'Келесі сұрақ →')+'</button>':'')}
 function renderSources(){$('#sourceList').innerHTML=sourceItems.map(x=>'<div class="source-item"><span>'+x[0]+'</span><a href="'+x[1]+'" target="_blank" rel="noopener noreferrer" aria-label="'+x[0]+' дереккөзі жаңа терезеде ашылады">Ашу <svg class="ui-icon ui-icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a></div>').join('')}
 document.addEventListener('click',e=>{
  const open=e.target.closest('[data-city-open]');if(open){showCity(open.dataset.cityOpen);return}
@@ -91,18 +82,13 @@ document.addEventListener('click',e=>{
  const filter=e.target.closest('[data-filter]');if(filter){$$('[data-filter]').forEach(x=>x.classList.toggle('active',x===filter));renderCities(filter.dataset.filter);return}
  const route=e.target.closest('[data-route]');if(route){selectedRoute=route.dataset.route;renderBuilder();return}
  const add=e.target.closest('[data-add]');if(add){let id=add.dataset.add;custom=custom.includes(id)?custom.filter(x=>x!==id):custom.concat(id);renderBuilder();return}
- const v=e.target.closest('[data-virtual]');if(v){virtualIndex=Number(v.dataset.virtual);renderVirtual();return}
- const step=e.target.closest('[data-step]');if(step){virtualIndex=Math.max(0,Math.min(cities.length-1,virtualIndex+Number(step.dataset.step)));renderVirtual();return}
- const answer=e.target.closest('[data-answer]');if(answer&&chosenAnswer===null){chosenAnswer=Number(answer.dataset.answer);if(chosenAnswer===quiz[quizIndex].answer)quizScore++;renderQuiz();return}
- if(e.target.closest('[data-quiz-next]')){quizIndex++;chosenAnswer=null;renderQuiz();return}
- if(e.target.closest('[data-quiz-reset]')){quizIndex=0;quizScore=0;chosenAnswer=null;renderQuiz();return}
+
 });
 $('#dialogClose').addEventListener('click',()=>$('#cityDialog').close());
 $('#cityDialog').addEventListener('click',e=>{if(e.target===$('#cityDialog'))$('#cityDialog').close()});
 $('#clearCustom')?.addEventListener('click',()=>{custom=[];renderBuilder()});
-$('#speed')?.addEventListener('input',e=>{speed=Number(e.target.value);$('#speedValue').textContent=speed+' км/сағ';renderBuilder()});
 $('#menuToggle').addEventListener('click',e=>{let nav=$('#mainNav'),expanded=e.currentTarget.getAttribute('aria-expanded')==='true';e.currentTarget.setAttribute('aria-expanded',String(!expanded));nav.classList.toggle('open',!expanded)});
 $$('#mainNav a').forEach(a=>a.addEventListener('click',()=>{$('#mainNav').classList.remove('open');$('#menuToggle').setAttribute('aria-expanded','false')}));
 document.addEventListener('error',e=>{if(e.target.tagName==='IMG'){e.target.closest('.city-visual,.dialog-visual')?.classList.add('no-photo');e.target.style.display='none'}},true);
-if($('#cityGrid'))renderCities();if($('#mapPins'))renderMap();if($('#routeResult'))renderBuilder();if($('#virtualCard'))renderVirtual();if($('#quizPanel'))renderQuiz();if($('#sourceList'))renderSources();
+if($('#cityGrid'))renderCities();if($('#mapPins'))renderMap();if($('#routeResult'))renderBuilder();if($('#sourceList'))renderSources();
 
