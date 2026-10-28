@@ -5,10 +5,13 @@ const SRT = (()=>{
  const safeWrite=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value))}catch{}};
  const clamp=(v,min,max,fallback)=>Number.isFinite(Number(v))&&v!==null&&v!==''?Math.min(max,Math.max(min,Number(v))):fallback;
  const defaults={kind:'short',stops:[],speed:55,visit:null,pause:20,round:false,timeMode:'road'};
- function normalize(value={}){return{kind:Object.hasOwn(presets,value.kind)||value.kind==='custom'?value.kind:'short',stops:Array.isArray(value.stops)?value.stops.filter(id=>Object.hasOwn(placeById,id)).slice(0,16):[],speed:Math.round(clamp(value.speed,20,140,55)),visit:value.visit===null||value.visit===undefined?null:clamp(value.visit,0,48,0),pause:clamp(value.pause,0,60,20),round:value.round===true,timeMode:value.timeMode==='manual'?'manual':'road'};}
+ function endpoint(v){if(!v||!Number.isFinite(v.lat)||!Number.isFinite(v.lon)||Math.abs(v.lat)>90||Math.abs(v.lon)>180)return null;return{name:String(v.name||'Менің нүктем').slice(0,120),lat:v.lat,lon:v.lon};}
+ function normalize(value={}){return{origin:endpoint(value.origin),destination:endpoint(value.destination),kind:Object.hasOwn(presets,value.kind)||value.kind==='custom'?value.kind:'short',stops:Array.isArray(value.stops)?value.stops.filter(id=>Object.hasOwn(placeById,id)).slice(0,16):[],speed:Math.round(clamp(value.speed,20,140,55)),visit:value.visit===null||value.visit===undefined?null:clamp(value.visit,0,48,0),pause:clamp(value.pause,0,60,20),round:value.round===true,timeMode:value.timeMode==='manual'?'manual':'road'};}
+ function register(plan){for(const key of ['origin','destination']){const id='user-'+key;if(plan[key])placeById[id]={...plan[key],id,transit:true,minutes:0};else delete placeById[id];}}
  const old=safeRead('srt-route',{});
  let state=normalize(safeRead(storageKey,safeRead('srt-plan-v2',{...defaults,kind:old?.kind||'short',stops:old?.custom||[]})));
  const query=new URLSearchParams(location.search);
+ for(const key of ['origin','destination'])if(query.has(key)){try{state[key]=JSON.parse(query.get(key))}catch{state[key]=null}}
  if(query.has('route'))state.kind=query.get('route');
  if(query.has('stops'))state.stops=query.get('stops').split(',');
  for(const k of ['speed','visit','pause','timeMode'])if(query.has(k))state[k]=query.get(k);
@@ -16,9 +19,10 @@ const SRT = (()=>{
  state=normalize(state);
  if(Object.hasOwn(placeById,query.get('add'))){if(state.kind!=='custom')state.stops=[...new Set(roadStops[state.kind]||[])];state.kind='custom';if(!state.stops.includes(query.get('add')))state.stops.push(query.get('add'));state.visit=null;}
  state=normalize(state);
- function save(patch={}){state=normalize({...state,...patch});safeWrite(storageKey,state);if(typeof document!=='undefined')document.dispatchEvent(new CustomEvent('srt:planchange'));return state;}
- function ids(plan=state){let list=plan.kind==='custom'?[...plan.stops]:[...roadStops[plan.kind]];if(plan.kind==='custom'&&plan.round&&list.length>1&&list.at(-1)!==list[0])list.push(list[0]);return list;}
- function href(page,plan=state){const p=new URLSearchParams({route:plan.kind,speed:String(plan.speed),pause:String(plan.pause),round:plan.round?'1':'0',timeMode:plan.timeMode});if(plan.stops.length)p.set('stops',plan.stops.join(','));if(plan.visit!==null)p.set('visit',String(plan.visit));return './'+page+'?'+p;}
+ register(state);
+ function save(patch={}){state=normalize({...state,...patch});register(state);safeWrite(storageKey,state);if(typeof document!=='undefined')document.dispatchEvent(new CustomEvent('srt:planchange'));return state;}
+ function ids(plan=state){let list=plan.kind==='custom'?[...plan.stops]:[...roadStops[plan.kind]];if(plan.kind==='custom'&&plan.round&&list.length>1&&list.at(-1)!==list[0])list.push(list[0]);if(plan.origin)list.unshift('user-origin');if(plan.destination)list.push('user-destination');return list;}
+ function href(page,plan=state){const p=new URLSearchParams({route:plan.kind,speed:String(plan.speed),pause:String(plan.pause),round:plan.round?'1':'0',timeMode:plan.timeMode});for(const key of ['origin','destination'])p.set(key,JSON.stringify(plan[key]));if(plan.stops.length)p.set('stops',plan.stops.join(','));if(plan.visit!==null)p.set('visit',String(plan.visit));return './'+page+'?'+p;}
  function visits(plan=state){if(plan.visit!==null)return plan.visit;return [...new Set(ids(plan))].reduce((sum,id)=>sum+(placeById[id].minutes||0),0)/60;}
  function total(item,plan=state){const r=item.data.routes[0],road=plan.timeMode==='manual'?r.distance/1000/plan.speed:r.duration/3600;const breaks=Math.max(0,Math.ceil(road/2)-1)*plan.pause/60;return{road,breaks,visit:visits(plan),total:road+breaks+visits(plan),service:r.duration/3600};}
  const validPoint=p=>Array.isArray(p)&&p.length>=2&&Number.isFinite(p[0])&&Number.isFinite(p[1])&&Math.abs(p[0])<=180&&Math.abs(p[1])<=90;
@@ -36,7 +40,7 @@ const SRT = (()=>{
  function cached(list=ids()){const key=keyFor(list),item=cache.get(key);if(item&&Date.now()-item.time<ttl)return item;cache.delete(key);return null;}
  let lastStart=0;
  async function route(list=ids(),refresh=false){
-  if(list.length<2||list.length>17||list.some(id=>!Object.hasOwn(placeById,id)))throw Error('Кемінде екі нысанды таңдаңыз');
+  if(list.length<2||list.length>19||list.some(id=>!Object.hasOwn(placeById,id)))throw Error('Кемінде екі нысанды таңдаңыз');
   const key=keyFor(list);if(!refresh&&cached(list))return cached(list);if(inflight.has(key))return inflight.get(key);
   const request=(async()=>{
    const coordinates=list.map(id=>placeById[id].lon+','+placeById[id].lat).join(';');let lastError;

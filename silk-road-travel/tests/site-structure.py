@@ -33,10 +33,10 @@ for name,p in pages.items():
     if name not in ('defense.html','virtual.html'):
         s=(root/name).read_text()
         assert all(term not in s for term in ['Жобаны қорғау','./virtual.html','./defense.html']), name
-        assert './planner.css?v=20261028-flow' in s, name
-        assert p.scripts.index('./planner-core.js?v=20261028-flow')<p.scripts.index('./journey.js?v=20261028-flow')
+        assert './planner.css?v=20261029-fixes' in s, name
+        assert p.scripts.index('./planner-core.js?v=20261029-fixes')<p.scripts.index('./journey.js?v=20261029-fixes')
 q=pages['quiz.html'].scripts
-assert q.index('./heritage-data.js?v=20261028-history')<q.index('./quiz-data.js?v=20261028-flow')<q.index('./quiz-core.js?v=20261028-flow')<q.index('./quiz.js?v=20261028-flow')
+assert q.index('./heritage-data.js?v=20261028-history')<q.index('./quiz-data.js?v=20261028-flow')<q.index('./quiz-core.js?v=20261029-fixes')<q.index('./quiz.js?v=20261029-fixes')
 js=list(root.glob('*.js'))+list((root/'scripts').glob('*.cjs'))+list((root/'tests').glob('*.cjs'))
 for path in js: subprocess.run(['node','--check',str(path)],check=True)
 print(f'PASS: {len(pages)} HTML pages, balanced tags, unique IDs, local links/fragments, navigation, script order and syntax of {len(js)} JS files.')

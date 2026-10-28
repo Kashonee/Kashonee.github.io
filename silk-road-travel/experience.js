@@ -10,7 +10,7 @@
  function notify(message){const t=$('#toast');if(!t)return;t.textContent=message;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600)}
  function updateSaved(){
   if($('#savedCount'))$('#savedCount').textContent=saved.size;
-  $$('[data-save-city]').forEach(b=>{const chosen=saved.has(b.dataset.saveCity);b.classList.toggle('saved',chosen);b.setAttribute('aria-pressed',String(chosen));if(b.classList.contains('save-detail')){b.innerHTML=(chosen?SAVED_ICONS.check:SAVED_ICONS.heart)+'<span>'+(chosen?'Саяхат тізімінде сақталған':'Саяхат тізіміне сақтау')+'</span>'}else{b.innerHTML=chosen?SAVED_ICONS.filled:SAVED_ICONS.heart;b.setAttribute('aria-label',byId[b.dataset.saveCity].name+(chosen?' қаласын тізімнен алу':' қаласын сақтау'))}})
+  $$('[data-save-city]').forEach(b=>{const chosen=saved.has(b.dataset.saveCity);b.classList.toggle('saved',chosen);b.setAttribute('aria-pressed',String(chosen));if(b.classList.contains('save-detail')){b.innerHTML=(chosen?SAVED_ICONS.check:SAVED_ICONS.heart)+'<span>'+(chosen?'Таңдаулыларда сақталған':'Таңдаулыларға сақтау')+'</span>'}else{b.innerHTML=chosen?SAVED_ICONS.filled:SAVED_ICONS.heart;b.setAttribute('aria-label',byId[b.dataset.saveCity].name+(chosen?' қаласын тізімнен алу':' қаласын сақтау'))}})
  }
  const observer=(!reduced&&'IntersectionObserver' in window)?new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.08}):null;
  if(observer)document.documentElement.classList.add('js-motion');
@@ -30,7 +30,7 @@
  }
  document.addEventListener('click',e=>{
   const b=e.target.closest('[data-save-city]');
-  if(b){const id=b.dataset.saveCity;if(!byId[id])return;const had=saved.has(id);had?saved.delete(id):saved.add(id);writeStore('srt-saved-cities',Array.from(saved));updateSaved();notify(byId[id].name+(had?' тізімнен алынды':' саяхат тізіміне сақталды'));if($('#cityGrid')&&onlySaved)renderCities()}
+  if(b){const id=b.dataset.saveCity;if(!byId[id])return;const had=saved.has(id);had?saved.delete(id):saved.add(id);writeStore('srt-saved-cities',Array.from(saved));updateSaved();notify(byId[id].name+(had?' тізімнен алынды':' таңдаулыларға сақталды'));if($('#cityGrid')&&onlySaved)renderCities()}
  });
  updateSaved();revealNodes();
  function progress(){const height=document.documentElement.scrollHeight-innerHeight;const value=height>0?scrollY/height*100:0;const bar=$('.reading-progress');if(bar)bar.style.width=value+'%'}
