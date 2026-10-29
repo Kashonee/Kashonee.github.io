@@ -75,3 +75,14 @@ Run `node tests/quiz-core.test.cjs` for the 30-question bank, source references,
 Run `node scripts/render-research.cjs` to regenerate the page from `scripts/research-content.template` and the shared city, site and heritage catalogues. This also regenerates downloadable CSV tables, an empty experiment protocol and research metrics JSON in `research-files/`; the questionnaire TXT is maintained separately. The research page makes no road-service requests and uses no extra runtime JavaScript. Sources and tables remain readable without JavaScript.
 
 Validation: `node tests/research-content.test.cjs` checks metric consistency with canonical routes, bibliography anchors and download integrity; `python tests/site-structure.py` checks page structure, links and script syntax. Visual browser QA remains unavailable in this environment.
+
+
+## Address selection — 29 October 2026
+
+Routes no longer asks visitors to type latitude or longitude. `address-picker.js` provides a place/address input and links to Google Maps, Yandex Maps and 2GIS search. These open the providers' own pages/apps; they are not an embedded geocoding API. Paste a place link to import an explicit point, then review and confirm it. `address-core.js` validates provider hosts, coordinate ranges and axis order. Google camera coordinates, Yandex `ll` and 2GIS `m` are viewport hints only, never saved automatically as destinations. Opaque place IDs and shortened links require opening the full provider link or selecting a location in the optional map. There is no scraping, redirect proxy or Nominatim call.
+
+The optional OpenStreetMap picker loads Leaflet only when opened; clicking a location, dragging its pin or choosing the map centre creates an unsaved draft. Confirmation updates the existing shared plan used by the calculator. Existing saved endpoints remain valid; rejected links do not overwrite them. The daily calculator remains in `trip-tools.js`.
+
+Provider references: https://developers.google.com/maps/documentation/urls/get-started ; https://www.yandex.ru/support/maps/ru/concept/get-map-reference ; https://help.2gis.ru/question/razrabotchikam-zapusk-ideystviya-vmobilnom-prilozhenii-cherez-deeplink . Provider-specific share formats may change; unresolved links leave the existing plan untouched.
+
+Checks: `node tests/address-core.test.cjs` and `node tests/address-ui.test.cjs` cover URL formats, unsafe inputs, viewport/point distinctions, saved data and explicit map confirmation using DOM/Leaflet doubles. No browser visual or live external-search QA was available.
