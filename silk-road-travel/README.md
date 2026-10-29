@@ -86,3 +86,9 @@ The optional OpenStreetMap picker loads Leaflet only when opened; clicking a loc
 Provider references: https://developers.google.com/maps/documentation/urls/get-started ; https://www.yandex.ru/support/maps/ru/concept/get-map-reference ; https://help.2gis.ru/question/razrabotchikam-zapusk-ideystviya-vmobilnom-prilozhenii-cherez-deeplink . Provider-specific share formats may change; unresolved links leave the existing plan untouched.
 
 Checks: `node tests/address-core.test.cjs` and `node tests/address-ui.test.cjs` cover URL formats, unsafe inputs, viewport/point distinctions, saved data and explicit map confirmation using DOM/Leaflet doubles. No browser visual or live external-search QA was available.
+
+### Interface refresh · 29 October 2026
+
+The shared `design.css` layer follows the feature styles on all 13 content pages. It uses a white background, green controls, consistent spacing, readable text and static photography. The home page now leads to city profiles, the three existing route plans and the map tour. Search, source links, research downloads, attribution and route state remain in their existing modules. Additional starting/ending addresses use a native disclosure; saved addresses open it automatically.
+
+`ui.js` handles keyboard route tabs, filter accessibility states, mobile menu dismissal and home image fallbacks. Decorative card tilt, scroll reveals and the external font import were removed. Header and page styles include phone, tablet and desktop breakpoints. `node tests/ui-interactions.test.cjs` checks the new menu/keyboard behaviour with DOM doubles. The existing address, planner, quiz, research and tour tests pass. Principal text/background pairs were checked for contrast. Browser and physical phone visual checks were unavailable in this environment; breakpoint rules and DOM checks are not a substitute for those checks.
