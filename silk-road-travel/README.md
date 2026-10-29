@@ -66,3 +66,12 @@ Startup verification: `node tests/caravan-startup.test.cjs` exercises the UI ada
 ## Current validation — page simplification
 
 Run `node tests/quiz-core.test.cjs` for the 30-question bank, source references, scoring, invalid/double answers, completion and quick-mode sampling. Run `node tests/planner-flow.test.cjs` for URL/state preservation, road-versus-manual time, integer speed, invalid input, calculator event wiring and the absence of road requests on Routes and Map. The existing caravan tests cover playback and startup regressions. Logic/UI-adapter tests use synthetic data and DOM doubles, not live traffic or browser rendering. No supported browser runner is available in the editing environment.
+
+
+## Expanded research section — 29 October 2026
+
+`research.html` contains the research passport, historical context, methods, six-centre comparison, catalogue-derived route statistics, an accessible coverage chart, findings, limitations, survey and test protocol, conclusions and 15 historical references. Experiment outcomes remain unreported until raw records are supplied. Model distances are confined to a clearly labelled explanatory disclosure.
+
+Run `node scripts/render-research.cjs` to regenerate the page from `scripts/research-content.template` and the shared city, site and heritage catalogues. This also regenerates downloadable CSV tables, an empty experiment protocol and research metrics JSON in `research-files/`; the questionnaire TXT is maintained separately. The research page makes no road-service requests and uses no extra runtime JavaScript. Sources and tables remain readable without JavaScript.
+
+Validation: `node tests/research-content.test.cjs` checks metric consistency with canonical routes, bibliography anchors and download integrity; `python tests/site-structure.py` checks page structure, links and script syntax. Visual browser QA remains unavailable in this environment.
