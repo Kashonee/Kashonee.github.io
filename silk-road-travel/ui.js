@@ -58,9 +58,9 @@
   syncFilters();
 
   // A failed third-party image keeps its caption and source link usable.
-  document.querySelectorAll('.editorial-photo img, .feature-image img').forEach(img => {
+  document.querySelectorAll('.exp-destination-image img, .exp-caravan-photo img').forEach(img => {
     const failed = () => {
-      const holder = img.closest('.editorial-photo, .feature-image');
+      const holder = img.closest('.exp-destination-image, .exp-caravan-photo');
       if (!holder || holder.querySelector('.image-unavailable')) return;
       img.hidden = true;
       const message = document.createElement('span');

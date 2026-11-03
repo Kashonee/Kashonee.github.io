@@ -92,3 +92,12 @@ Checks: `node tests/address-core.test.cjs` and `node tests/address-ui.test.cjs` 
 The shared `design.css` layer follows the feature styles on all 13 content pages. It uses a white background, green controls, consistent spacing, readable text and static photography. The home page now leads to city profiles, the three existing route plans and the map tour. Search, source links, research downloads, attribution and route state remain in their existing modules. Additional starting/ending addresses use a native disclosure; saved addresses open it automatically.
 
 `ui.js` handles keyboard route tabs, filter accessibility states, mobile menu dismissal and home image fallbacks. Decorative card tilt, scroll reveals and the external font import were removed. Header and page styles include phone, tablet and desktop breakpoints. `node tests/ui-interactions.test.cjs` checks the new menu/keyboard behaviour with DOM doubles. The existing address, planner, quiz, research and tour tests pass. Principal text/background pairs were checked for contrast. Browser and physical phone visual checks were unavailable in this environment; breakpoint rules and DOM checks are not a substitute for those checks.
+
+
+### Expedition journal interface · 3 November 2026
+
+The homepage now opens with a sourced historical photograph and a direct route action, then switches between a varied city mosaic, three visually distinct itinerary options, a map-tour invitation, and education/research links. The six core tool pages have photographed introductions with attribution and dedicated colour accents. The historic city content, map/routing behaviour, address import and quiz functions remain intact. Images are documentary photos from the existing credited city catalogue.
+
+The user requested the **earlier material** in Research. `research.html` and `scripts/research-content.template` again show the compact pre-expansion content: model-distance chart, six-city table, dynamic sources, authors and the openly unfilled trial-method table. An obsolete “compare road on Map” link was corrected to Calculator. `scripts/render-research.cjs` reproduces that version; canonical research downloads remain available as source files. The expanded research text is not shown as an additional page. The research-content check has been updated accordingly.
+
+The design changes are CSS/HTML and do not request additional runtime APIs. Existing functional tests passed; a controlled browser and phone viewport were unavailable for screenshot QA.
