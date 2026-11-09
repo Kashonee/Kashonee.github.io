@@ -46,3 +46,9 @@ The supplied public Supabase project URL and Publishable key are now configured.
 ## Login error reporting — 2026-11-09
 
 The client now preserves the Supabase Auth error code and distinguishes unconfirmed email, disabled email login, banned accounts and an invalid public API key from invalid account credentials. It does not display raw server messages, passwords, tokens or hashes. Unknown Auth codes use a generic message with the code only. Legacy responses without a code retain the existing fallback. 119 automated tests pass. This fixes error reporting; the reported real account failure still needs hosted account diagnostics.
+
+## Learning and usability audit — 2026-11-09
+
+138 automated tests pass. The current release adds a visible transfer route, a topic mistake notebook, balanced study sessions, eight-strategy Reading evidence, actionable teacher priorities and accurate Writing length feedback. Vocabulary filter values are repaired, submitted diagnostic answers are locked after keys open, assignment failures no longer retry recursively and edited essays immediately show stale teacher feedback. See [QA_AUDIT_2026-11-09.md](QA_AUDIT_2026-11-09.md) for reproduced issues and remaining limits.
+
+The configured public Supabase integration is retained; the user has reported successful login. This is not a hosted multi-user isolation test. Original inactive-configuration notes above describe historical releases. The platform remains a self-study tool, with browser rendering and deployed RLS verification still outstanding.
