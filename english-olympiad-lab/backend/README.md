@@ -15,3 +15,7 @@ The real project URL and public publishable key were configured on 2026-11-09. H
 ## Teacher assignments
 
 After schema.sql, run assignments.sql. Teachers can create diagnostics, lesson tasks, writing tasks and custom instructions for linked pupils. Pupils own their response text. Assignment completion is self-reported and does not change automatic diagnostic or retest scores. This migration is prepared but has not been executed against a hosted project here. Include assignment RLS in your hosted role tests before use.
+
+## AI Writing review
+
+The optional AI service is implemented separately from teacher feedback. Apply `ai-review.sql`, configure the server-only `OPENAI_API_KEY`, and deploy the `check-writing` Edge Function. The deployed Pages frontend detects missing service configuration without blocking normal learning. Use [the copy-ready setup page](../ai-setup.html) and [AI_REVIEW.md](AI_REVIEW.md). No live provider request or hosted migration has been performed from this environment.

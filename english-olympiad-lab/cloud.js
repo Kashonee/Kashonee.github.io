@@ -14,9 +14,10 @@ C.onStatus=fn=>{listener=fn;};
 function authStore(){try{session?sessionStorage.setItem(authKey,JSON.stringify(session)):sessionStorage.removeItem(authKey);}catch{/* A blocked session store only requires signing in again after reload. */}}
 function rememberPending(){if(!C.user)return;try{if(pending)localStorage.setItem(pendingKey(),JSON.stringify({revision:C.revision,payload:pending}));else localStorage.removeItem(pendingKey());}catch{announce('Жергілікті көшірме сақталмады; серверге жіберуді тексер.');}}
 async function raw(path,options={},auth=true){
+ const {timeoutMs=15000,...fetchOptions}=options;
  const headers={'apikey':key,'Content-Type':'application/json',...options.headers};if(auth&&session?.access_token)headers.Authorization='Bearer '+session.access_token;
- const controller=typeof AbortController==='function'?new AbortController():null,timer=controller?setTimeout(()=>controller.abort(),15000):null;
- let response;try{response=await fetch(url+path,{...options,headers,cache:'no-store',...(controller?{signal:controller.signal}:{})});}catch{const e=new Error('Серверге қосылу мүмкін емес. Интернетті тексер.');e.offline=true;throw e;}finally{if(timer)clearTimeout(timer);}
+ const controller=typeof AbortController==='function'?new AbortController():null,timer=controller?setTimeout(()=>controller.abort(),timeoutMs):null;
+ let response;try{response=await fetch(url+path,{...fetchOptions,headers,cache:'no-store',...(controller?{signal:controller.signal}:{})});}catch{const e=new Error('Серверге қосылу мүмкін емес. Интернетті тексер.');e.offline=true;throw e;}finally{if(timer)clearTimeout(timer);}
  const text=await response.text();let data;try{data=text?JSON.parse(text):null;}catch{throw new Error('Сервер жауабы оқылмады.');}
  if(!response.ok){const e=new Error(response.status===409?'Басқа құрылғы жаңа нұсқа сақтады.':response.status===401?'Кіру мерзімі аяқталды.':response.status===429?'Тым көп әрекет. Біраздан кейін қайтала.':'Сұрау орындалмады. Тіркелгіні және база баптауын тексер.');e.status=response.status;const code=data?.error_code||data?.code;e.authCode=typeof code==='string'&&/^[a-z][a-z0-9_]{0,79}$/.test(code)?code:null;if(response.status===401&&/^invalid api key\.?$/i.test(String(data?.message||'')))e.authCode='invalid_api_key';throw e;}
  return data;
@@ -42,6 +43,47 @@ C.loadStudents=async()=>{if(C.profile?.role!=='teacher')throw new Error('Мұғ�
 C.saveFeedback=async data=>{if(C.profile?.role!=='teacher'||!students.some(s=>s.id===data.student_id))throw new Error('Бұл оқушыға қолжетімділік жоқ.');const body={student_id:data.student_id,task_id:data.task_id,teacher_id:C.user.id,essay_text:data.essay_text,content:data.content,organization:data.organization,language:data.language,feedback:data.feedback};const result=await api('/rest/v1/lab_feedback?on_conflict=student_id,task_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify(body)});return result[0];};
 C.changePassword=async password=>{if(String(password).length<12)throw new Error('Кемінде 12 таңба қолдан.');await api('/auth/v1/user',{method:'PUT',body:JSON.stringify({password})});};
 C.logout=async()=>{if(pending)await C.flush();if(pending)throw new Error('Жіберілмеген жұмыс бар. Алдымен сақта немесе көшірмесін жүкте.');try{await api('/auth/v1/logout?scope=local',{method:'POST'});}catch{announce('Серверден шығу расталмады. Қайта әрекет жаса.');throw new Error('Шығу расталмады. Интернетті тексер.');}session=null;authStore();C.user=null;C.profile=null;C.feedback=[];location.reload();};
+// AI feedback is server-owned and never merged into pupil progress or teacher grades.
+C.aiAvailable=null;C.aiReviews=[];C.aiMessage='';
+const aiMessages={
+ ai_not_configured:'ИИ тексеруі әлі қосылмаған. Мұғалім қызметті баптауы керек.',
+ ai_storage_unavailable:'ИИ нәтижелерін сақтау қызметі дайын емес. Мұғалімге хабарлас.',
+ ai_unauthorized:'Кіру мерзімі аяқталған. Кабинетке қайта кір.',
+ ai_forbidden:'Бұл жұмысты тексеруге қолжетімділік жоқ.',
+ ai_invalid_task:'Бұл тапсырмаға ИИ тексеруі қолжетімсіз.',
+ ai_not_submitted:'Алдымен диагностиканы немесе нұсқаны толық жібер.',
+ ai_text_changed:'Сервердегі мәтін өзгерген. Соңғы нұсқаны сақтап, қайта тексер.',
+ ai_too_short:'Талдау үшін кемінде 30 сөз жаз.',
+ ai_too_long:'ИИ тексеруі үшін мәтін 12 000 таңбадан аспауы керек.',
+ ai_busy:'Бұл оқушының жұмысы тексеріліп жатыр. Екі минуттан кейін нәтижелерді жаңарт.',
+ ai_daily_limit:'Осы оқушы үшін 24 сағаттағы 6 тексеру шегіне жеттің. Кейінірек қайтала.',
+ ai_global_limit:'Платформаның тәуліктік ИИ тексеру шегіне жетті. Кейінірек қайтала.',
+ ai_cooldown:'Келесі тексеруге дейін бір минут күт.',
+ ai_provider_limit:'ИИ қызметінің сұрау немесе төлем шегі аяқталған. Мұғалімге хабарлас.',
+ ai_provider_error:'ИИ қызметі жауап бермеді. Мұғалім сервердегі қызмет баптауын тексеруі керек.',
+ ai_refused:'ИИ бұл мәтінге талдау бере алмады. Жұмысты мұғаліммен талда.',
+ ai_incomplete:'ИИ толық жауап қайтармады. Мәтінің сақталған, кейін қайта тексер.',
+ ai_invalid_response:'ИИ жауабы тексеруден өтпеді. Қате талдау сақталмады; кейін қайта тексер.',
+ ai_service_error:'ИИ қызметімен байланыс үзілді. Жұмысың сақталған. Алдымен нәтижелерді жаңартып көр.'
+};
+function aiError(e){return new Error(aiMessages[e.authCode]||(e.status===404?'ИИ тексеруі әлі қосылмаған. Мұғалім қызметті баптауы керек.':e.offline?aiMessages.ai_service_error:e.message||aiMessages.ai_service_error));}
+C.aiStatus=async()=>{try{const data=await api('/functions/v1/check-writing',{method:'POST',body:JSON.stringify({action:'status'})});C.aiAvailable=data?.available===true;C.aiMessage=C.aiAvailable?'':aiMessages.ai_not_configured;return C.aiAvailable;}catch(e){C.aiAvailable=false;C.aiMessage=aiError(e).message;return false;}};
+C.loadAIReviews=async(studentId=C.user?.id)=>{
+ if(!C.profile||C.profile.role==='student'&&studentId!==C.user.id||C.profile.role==='teacher'&&!students.some(s=>s.id===studentId))throw new Error(aiMessages.ai_forbidden);
+ const reviews=await api('/rest/v1/lab_ai_reviews?select=*&student_id=eq.'+encodeURIComponent(studentId)+'&order=created_at.desc&limit=100');
+ C.aiReviews=C.aiReviews.filter(r=>r.student_id!==studentId).concat(reviews);return reviews;
+};
+C.reviewWriting=async(taskId,essayText,studentId=C.user?.id)=>{
+ if(!C.profile||C.profile.role==='student'&&studentId!==C.user.id||C.profile.role==='teacher'&&!students.some(s=>s.id===studentId))throw new Error(aiMessages.ai_forbidden);
+ if(!/^(W[12]|P[1-6]|M[1-3])$/.test(taskId))throw new Error(aiMessages.ai_invalid_task);
+ if(C.profile.role==='student'){if(C.conflict)throw new Error('Алдымен екі құрылғыдағы нұсқа қақтығысын шеш.');await C.flush();if(C.hasPending())throw new Error('Алдымен мәтіннің серверге сақталуын күт.');}
+ try{
+  const data=await api('/functions/v1/check-writing',{method:'POST',timeoutMs:95000,body:JSON.stringify({action:'review',task_id:taskId,student_id:studentId,essay_text:essayText})});
+  const r=data?.review;if(!r||r.student_id!==studentId||r.task_id!==taskId||r.essay_text!==essayText||!r.result?.scores)throw new Error('ИИ тексеруінің нұсқасы сәйкес емес. Нәтижелерді жаңарт.');
+  C.aiReviews=C.aiReviews.filter(x=>x.id!==r.id);C.aiReviews.unshift(r);return r;
+ }catch(e){throw aiError(e);}
+};
+
 C.assignments=[];C.submissions=[];C.assignmentSupport=null;
 C.loadAssignments=async()=>{if(!C.profile)return [];try{const result=await Promise.all([api('/rest/v1/lab_assignments?select=*&archived=eq.false&order=created_at.desc'),api('/rest/v1/lab_assignment_submissions?select=*')]);C.assignments=result[0];C.submissions=result[1];C.assignmentSupport=true;return C.assignments;}catch(e){if(e.status===404||e.status===400){C.assignmentSupport=false;C.assignments=[];C.submissions=[];return [];}throw e;}};
 C.createAssignment=async data=>{if(C.profile?.role!=='teacher'||!students.some(s=>s.id===data.student_id))throw new Error('Бұл оқушыға қолжетімділік жоқ.');if(!['diagnostic','lesson','writing','custom'].includes(data.kind)||!String(data.title||'').trim())throw new Error('Тапсырма түрін және атауын таңдаңыз.');const row={student_id:data.student_id,teacher_id:C.user.id,kind:data.kind,title:String(data.title).trim(),instructions:String(data.instructions||''),target:String(data.target||''),due_at:data.due_at||null};const result=await api('/rest/v1/lab_assignments',{method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify(row)});C.assignments.unshift(result[0]);return result[0];};
