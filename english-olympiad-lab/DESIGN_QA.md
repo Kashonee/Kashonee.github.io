@@ -42,3 +42,7 @@ All public platform navigation, landing copy, account messages, teacher controls
 ## Server configuration — 2026-11-09
 
 The supplied public Supabase project URL and Publishable key are now configured. The existing Auth/REST client activates the account route; no Next.js or SSR migration was needed. No passwords, secret keys or pupil records were added. Anonymous read-only probes from the execution environment were blocked with an envoy 403 response stating that calls to the URL are not allowed; this is a network restriction, not evidence of a Supabase failure or an RLS pass. Real account sign-in and hosted policies remain unverified. The existing SQL scripts and two-account verification guide remain applicable. The former inactive-state notes above describe the earlier release.
+
+## Login error reporting — 2026-11-09
+
+The client now preserves the Supabase Auth error code and distinguishes unconfirmed email, disabled email login, banned accounts and an invalid public API key from invalid account credentials. It does not display raw server messages, passwords, tokens or hashes. Unknown Auth codes use a generic message with the code only. Legacy responses without a code retain the existing fallback. 119 automated tests pass. This fixes error reporting; the reported real account failure still needs hosted account diagnostics.
