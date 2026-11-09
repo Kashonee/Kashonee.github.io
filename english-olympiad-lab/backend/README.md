@@ -10,7 +10,7 @@ The browser calls Supabase Auth and PostgREST over HTTPS. Credentials are verifi
 
 Teacher feedback is stored separately from student progress and binds to the exact essay text. Student-owned JSON cannot create a teacher grade. Teachers can only read or grade their assigned students. The diagnostic is still formative practice, not a proctored exam.
 
-Until a real project is connected and its hosted RLS tests are run, account functionality is prepared but inactive. Offline/mocked tests cannot establish that a deployed Supabase project has the intended policies.
+The real project URL and public publishable key were configured on 2026-11-09. Hosted RLS, account creation and actual password sign-in still require verification. Outbound requests to the Supabase project are blocked by the execution environment network policy. Offline/mocked tests cannot establish that a deployed Supabase project has the intended policies.
 
 ## Teacher assignments
 

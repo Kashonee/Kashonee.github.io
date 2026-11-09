@@ -38,3 +38,7 @@ A browser rendering facility is unavailable in this environment. Real rendering 
 ## Kazakh interface update
 
 All public platform navigation, landing copy, account messages, teacher controls, achievements and diagnostic UI are in Kazakh. Original English exercise stems, choices, reading texts, writing assignments and learning examples are retained. Topic and vocabulary category headings are translated only when displayed; their source data and identifiers remain unchanged. Dedicated task blocks declare lang=en while document language stays kk. 113 tests pass, including checks of Kazakh controls and preserved English tasks. The original diagnostic, lesson, vocabulary and six Writing definitions were compared before/after and are identical. Browser visual validation remains unavailable.
+
+## Server configuration — 2026-11-09
+
+The supplied public Supabase project URL and Publishable key are now configured. The existing Auth/REST client activates the account route; no Next.js or SSR migration was needed. No passwords, secret keys or pupil records were added. Anonymous read-only probes from the execution environment were blocked with an envoy 403 response stating that calls to the URL are not allowed; this is a network restriction, not evidence of a Supabase failure or an RLS pass. Real account sign-in and hosted policies remain unverified. The existing SQL scripts and two-account verification guide remain applicable. The former inactive-state notes above describe the earlier release.
