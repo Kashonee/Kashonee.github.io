@@ -56,3 +56,7 @@ The configured public Supabase integration is retained; the user has reported su
 ## AI Writing interface — 2026-11-10
 
 The optional AI panel is integrated into eleven Writing tasks and the linked teacher review view. It shows configuration, loading, failure, ready and stale-version states; proposed scores are visibly separate from teacher assessment. English practice answers are behind explicit disclosure controls. Model content is escaped and uses the existing light/dark tokens and responsive layout. The server code, additive migration and copy-ready activation guide are included. 170 mocked automated tests pass. Supabase activation, a real model call, hosted RLS verification and browser rendering remain outstanding.
+
+## Groq connection — 2026-11-10
+
+Updated the same AI panel and setup guide for Groq, with named-provider disclosure, separate missing-key/auth/rate/quota errors, and preserved attribution of existing OpenAI reviews. The setup guide explains exact secret names and replacing the existing function. No SQL or progress-format changes. 182 automated tests pass, including provider selection, no paid fallback, malformed completions and client status. A real Groq request and hosted function update still require the owner's server secret and deployment; no browser QA was available.

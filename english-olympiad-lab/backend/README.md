@@ -18,4 +18,6 @@ After schema.sql, run assignments.sql. Teachers can create diagnostics, lesson t
 
 ## AI Writing review
 
-The optional AI service is implemented separately from teacher feedback. Apply `ai-review.sql`, configure the server-only `OPENAI_API_KEY`, and deploy the `check-writing` Edge Function. The deployed Pages frontend detects missing service configuration without blocking normal learning. Use [the copy-ready setup page](../ai-setup.html) and [AI_REVIEW.md](AI_REVIEW.md). No live provider request or hosted migration has been performed from this environment.
+The optional AI service is implemented separately from teacher feedback. Apply `ai-review.sql`, configure the server-only `GROQ_API_KEY` and `AI_PROVIDER=groq`, and deploy the `check-writing` Edge Function. The deployed Pages frontend detects missing service configuration without blocking normal learning. Use [the copy-ready setup page](../ai-setup.html) and [AI_REVIEW.md](AI_REVIEW.md). No live provider request or hosted migration has been performed from this environment.
+
+Existing OpenAI deployments can switch to Groq by updating secrets and replacing the same function code. The AI SQL migration is unchanged. There is no automatic paid-provider fallback.

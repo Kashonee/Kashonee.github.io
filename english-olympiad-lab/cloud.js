@@ -44,9 +44,15 @@ C.saveFeedback=async data=>{if(C.profile?.role!=='teacher'||!students.some(s=>s.
 C.changePassword=async password=>{if(String(password).length<12)throw new Error('Кемінде 12 таңба қолдан.');await api('/auth/v1/user',{method:'PUT',body:JSON.stringify({password})});};
 C.logout=async()=>{if(pending)await C.flush();if(pending)throw new Error('Жіберілмеген жұмыс бар. Алдымен сақта немесе көшірмесін жүкте.');try{await api('/auth/v1/logout?scope=local',{method:'POST'});}catch{announce('Серверден шығу расталмады. Қайта әрекет жаса.');throw new Error('Шығу расталмады. Интернетті тексер.');}session=null;authStore();C.user=null;C.profile=null;C.feedback=[];location.reload();};
 // AI feedback is server-owned and never merged into pupil progress or teacher grades.
-C.aiAvailable=null;C.aiReviews=[];C.aiMessage='';
+C.aiAvailable=null;C.aiProvider=null;C.aiVersion=null;C.aiReviews=[];C.aiMessage='';
 const aiMessages={
  ai_not_configured:'ИИ тексеруі әлі қосылмаған. Мұғалім қызметті баптауы керек.',
+ ai_missing_groq_key:'Groq кілті табылмады. Мұғалім Supabase Secrets ішінде GROQ_API_KEY атауын дәл осылай сақтауы керек.',
+ ai_provider_config:'ИИ қызметінің баптауы сәйкес емес. Мұғалім AI_PROVIDER мәнін тексеруі керек.',
+ ai_provider_auth:'ИИ қызметі API кілтін қабылдамады. Мұғалім сервердегі кілт пен рұқсаттарды тексеруі керек.',
+ ai_provider_rate_limit:'ИИ қызметінің уақытша сұрау шегіне жетті. Біраздан кейін қайталап көр. Қайталанса, мұғалім сервис лимиттерін тексерсін.',
+ ai_provider_quota:'ИИ қызметінің кредиті немесе шығын лимиті аяқталған. Мұғалім сол қызметтің балансын және лимитін тексеруі керек.',
+ ai_provider_model:'Таңдалған ИИ моделі қолжетімсіз. Мұғалім сервердегі модель баптауын тексеруі керек.',
  ai_storage_unavailable:'ИИ нәтижелерін сақтау қызметі дайын емес. Мұғалімге хабарлас.',
  ai_unauthorized:'Кіру мерзімі аяқталған. Кабинетке қайта кір.',
  ai_forbidden:'Бұл жұмысты тексеруге қолжетімділік жоқ.',
@@ -67,7 +73,7 @@ const aiMessages={
  ai_service_error:'ИИ қызметімен байланыс үзілді. Жұмысың сақталған. Алдымен нәтижелерді жаңартып көр.'
 };
 function aiError(e){return new Error(aiMessages[e.authCode]||(e.status===404?'ИИ тексеруі әлі қосылмаған. Мұғалім қызметті баптауы керек.':e.offline?aiMessages.ai_service_error:e.message||aiMessages.ai_service_error));}
-C.aiStatus=async()=>{try{const data=await api('/functions/v1/check-writing',{method:'POST',body:JSON.stringify({action:'status'})});C.aiAvailable=data?.available===true;C.aiMessage=C.aiAvailable?'':aiMessages.ai_not_configured;return C.aiAvailable;}catch(e){C.aiAvailable=false;C.aiMessage=aiError(e).message;return false;}};
+C.aiStatus=async()=>{try{const data=await api('/functions/v1/check-writing',{method:'POST',body:JSON.stringify({action:'status'})});C.aiAvailable=data?.available===true;C.aiProvider=C.aiAvailable?(data.provider==='groq'?'groq':'openai'):null;C.aiVersion=C.aiAvailable?data.version||null:null;C.aiMessage=C.aiAvailable?'':aiMessages.ai_not_configured;return C.aiAvailable;}catch(e){C.aiAvailable=false;C.aiProvider=null;C.aiVersion=null;C.aiMessage=aiError(e).message;return false;}};
 C.loadAIReviews=async(studentId=C.user?.id)=>{
  if(!C.profile||C.profile.role==='student'&&studentId!==C.user.id||C.profile.role==='teacher'&&!students.some(s=>s.id===studentId))throw new Error(aiMessages.ai_forbidden);
  const reviews=await api('/rest/v1/lab_ai_reviews?select=*&student_id=eq.'+encodeURIComponent(studentId)+'&order=created_at.desc&limit=100');

@@ -1,6 +1,6 @@
 // Self-contained Supabase Edge Function. Secrets are read only at runtime.
 // No dependency install is needed when pasted into the Dashboard editor.
-export const PROMPT_VERSION = 'qaisar-writing-2026-11-v1';
+export const PROMPT_VERSION = 'qaisar-writing-2026-11-v2';
 export const TASKS = {
   "W1": {
     "title": "Opinion essay",
@@ -155,7 +155,11 @@ export function extractEssay(payload,taskId){
 }
 export function createHandler({env,fetcher=fetch,cryptoApi=crypto}){
   const url=String(env('SUPABASE_URL')||'').replace(/\/$/,''),publicKey=configKey(env,'SUPABASE_PUBLISHABLE_KEYS','SUPABASE_ANON_KEY'),serviceKey=configKey(env,'SUPABASE_SECRET_KEYS','SUPABASE_SERVICE_ROLE_KEY');
-  const origin=env('ALLOWED_ORIGIN')||'https://kashonee.github.io',model=env('OPENAI_MODEL')||'gpt-4.1-mini';
+  const origin=env('ALLOWED_ORIGIN')||'https://kashonee.github.io';
+  // Groq is the default. Never silently fall back to a paid provider.
+  const provider=String(env('AI_PROVIDER')||'groq').trim().toLowerCase();
+  const model=provider==='groq'?(env('GROQ_MODEL')||'openai/gpt-oss-120b'):(env('OPENAI_MODEL')||'gpt-4.1-mini');
+  const reviewVersion=PROMPT_VERSION+':'+provider+':'+model;
   async function requestJson(endpoint,options={},timeout=15000){
     const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeout);
     try{const response=await fetcher(endpoint,{...options,signal:controller.signal});let data;try{const raw=await response.text();data=raw?JSON.parse(raw):null;}catch{throw new ReviewError('ai_service_error',502);}return {response,data};}
@@ -192,10 +196,13 @@ export function createHandler({env,fetcher=fetch,cryptoApi=crypto}){
       const raw=await boundedBody(request);if(raw.length>24000)throw new ReviewError('ai_too_long');
       let body;try{body=JSON.parse(raw);}catch{throw new ReviewError('ai_bad_request');}
       if(!body||typeof body!=='object'||Array.isArray(body))throw new ReviewError('ai_bad_request');
-      if(!env('OPENAI_API_KEY'))throw new ReviewError('ai_not_configured',503);
+      if(!['groq','openai'].includes(provider)||reviewVersion.length>80)throw new ReviewError('ai_provider_config',503);
+      if(provider==='groq'&&!['openai/gpt-oss-120b','openai/gpt-oss-20b'].includes(model))throw new ReviewError('ai_provider_model',503);
+      const apiKey=String(env(provider==='groq'?'GROQ_API_KEY':'OPENAI_API_KEY')||'').trim();
+      if(!apiKey)throw new ReviewError(provider==='groq'?'ai_missing_groq_key':'ai_not_configured',503);
       if(body.action==='status'){
         await userRead('lab_ai_reviews?select=id&limit=1');
-        return send({available:true,version:PROMPT_VERSION});
+        return send({available:true,version:reviewVersion,provider,model});
       }
       if(body.action!=='review'||!Object.hasOwn(TASKS,body.task_id))throw new ReviewError('ai_invalid_task');
       const studentId=body.student_id||userId;
@@ -207,7 +214,7 @@ export function createHandler({env,fetcher=fetch,cryptoApi=crypto}){
       const text=extractEssay(records[0]?.payload,body.task_id);
       if(typeof body.essay_text!=='string'||body.essay_text!==text)throw new ReviewError('ai_text_changed',409);
       const hash=Array.from(new Uint8Array(await cryptoApi.subtle.digest('SHA-256',new TextEncoder().encode(text))),b=>b.toString(16).padStart(2,'0')).join('');
-      const claim=await admin('rpc/lab_ai_claim','POST',{p_student_id:studentId,p_requester_id:userId,p_task_id:body.task_id,p_essay_hash:hash,p_essay_text:text,p_prompt_version:PROMPT_VERSION});
+      const claim=await admin('rpc/lab_ai_claim','POST',{p_student_id:studentId,p_requester_id:userId,p_task_id:body.task_id,p_essay_hash:hash,p_essay_text:text,p_prompt_version:reviewVersion});
       const readResult=async id=>{
         const rows=await userRead('lab_ai_reviews?select=*&id=eq.'+encodeURIComponent(id));
         if(!rows[0]||rows[0].student_id!==studentId)throw new ReviewError('ai_forbidden',403);return rows[0];
@@ -218,19 +225,41 @@ export function createHandler({env,fetcher=fetch,cryptoApi=crypto}){
       if(claim.status!=='claimed'||!claim.job_id)throw new ReviewError('ai_service_error',503);
       jobId=claim.job_id;
       const task=TASKS[body.task_id],[min,max]=task.words.split('–').map(Number);
-      const completion=await requestJson('https://api.openai.com/v1/responses',{
-        method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+env('OPENAI_API_KEY')},
-        body:JSON.stringify({model,store:false,max_output_tokens:6000,instructions:INSTRUCTIONS,
-          input:[{role:'user',content:JSON.stringify({task:{genre:task.title,prompt:task.prompt,facts:task.facts||[],word_range:{min,max}},measured_word_count:wordCount(text),student_text:text})}],
-          text:{format:{type:'json_schema',name:'qaisar_writing_review',strict:true,schema:REVIEW_SCHEMA}}})
+      const input=JSON.stringify({task:{genre:task.title,prompt:task.prompt,facts:task.facts||[],word_range:{min,max}},measured_word_count:wordCount(text),student_text:text});
+      const schema={name:'qaisar_writing_review',strict:true,schema:REVIEW_SCHEMA};
+      const groq=provider==='groq';
+      const providerBody=groq?{
+        model,max_completion_tokens:4096,reasoning_effort:'low',include_reasoning:false,stream:false,
+        messages:[{role:'system',content:INSTRUCTIONS},{role:'user',content:input}],
+        response_format:{type:'json_schema',json_schema:schema}
+      }:{model,store:false,max_output_tokens:6000,instructions:INSTRUCTIONS,
+        input:[{role:'user',content:input}],text:{format:{type:'json_schema',...schema}}};
+      const completion=await requestJson(groq?'https://api.groq.com/openai/v1/chat/completions':'https://api.openai.com/v1/responses',{
+        method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+apiKey},body:JSON.stringify(providerBody)
       },55000);
-      if(!completion.response.ok)throw new ReviewError(completion.response.status===429?'ai_provider_limit':'ai_provider_error',503);
-      const data=completion.data,parts=(data.output||[]).filter(o=>o.type==='message').flatMap(o=>o.content||[]);
-      if(parts.some(p=>p.type==='refusal'))throw new ReviewError('ai_refused',422);
-      if(data.status!=='completed')throw new ReviewError('ai_incomplete',502);
-      let parsed;try{parsed=JSON.parse(parts.filter(p=>p.type==='output_text').map(p=>p.text).join(''));}catch{throw new ReviewError('ai_invalid_response',502);}
+      if(!completion.response.ok){
+        const status=completion.response.status,code=completion.data?.error?.code,type=completion.data?.error?.type;
+        const quota=['insufficient_quota','credit_balance_exhausted','organization_usage_limit_exceeded','organization_spend_limit_exceeded','project_spend_limit_exceeded'];
+        const error=status===401||status===403?'ai_provider_auth':status===429?(quota.includes(code)||type==='insufficient_quota'?'ai_provider_quota':'ai_provider_rate_limit'):status===404||code==='model_not_found'?'ai_provider_model':code==='json_validate_failed'?'ai_invalid_response':'ai_provider_error';
+        throw new ReviewError(error,503);
+      }
+      const data=completion.data;let output;
+      if(groq){
+        const choice=data?.choices?.[0];
+        if(choice?.message?.refusal||choice?.finish_reason==='content_filter')throw new ReviewError('ai_refused',422);
+        if(!choice)throw new ReviewError('ai_invalid_response',502);
+        if(choice.finish_reason!=='stop')throw new ReviewError('ai_incomplete',502);
+        if(choice.message?.tool_calls?.length||typeof choice.message?.content!=='string')throw new ReviewError('ai_invalid_response',502);
+        output=choice.message.content;
+      }else{
+        const parts=(data?.output||[]).filter(o=>o.type==='message').flatMap(o=>o.content||[]);
+        if(parts.some(p=>p.type==='refusal'))throw new ReviewError('ai_refused',422);
+        if(data?.status!=='completed')throw new ReviewError('ai_incomplete',502);
+        output=parts.filter(p=>p.type==='output_text').map(p=>p.text).join('');
+      }
+      let parsed;try{parsed=JSON.parse(output);}catch{throw new ReviewError('ai_invalid_response',502);}
       const result=validateReview(parsed,text);
-      result.word_count={actual:wordCount(text),min,max};result.version=1;
+      result.word_count={actual:wordCount(text),min,max};result.version=1;result.provider=provider;
       const reviewId=await admin('rpc/lab_ai_finish','POST',{p_job_id:jobId,p_result:result,p_model:model});
       jobId=null;
       return send({review:await readResult(reviewId),cached:false});
