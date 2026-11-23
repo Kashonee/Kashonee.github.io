@@ -1,0 +1,8 @@
+# Design
+Experience mode: the school occupies the screen. Quiet forest-green controls, lime action accent and warm limestone school architecture. Manrope with full Kazakh glyph support, self-hosted. White/ivory reading surfaces. Bottom-left orientation hint, location chip, map dialog and station-progress panel. Touch controls, visible keyboard focus and reduced motion support. Colors: ink #163a32, accent #d5ed8a, paper #f9faf6, muted #62706a. 14px overlay panels, 20px desktop reading dialogs (16px on mobile), 10px primary buttons and pill controls.
+
+## Final validation
+Desktop 1363×936 and mobile iframe viewport 390×844 inspected through the provided browser. All eighteen questions completed twice: one run with a deliberate retry scored 17/18 on first attempts, and one scored 18/18; both finished 6/6 stations. Reload restored progress. Full panorama mouse dragging, map navigation, all nine reading tabs and repeat/reset flow verified. Mobile completion reached 6/6, then the dedicated restart control reset progress to 0/6. Canvas rendering uses pre-rendered original school geometry and six WebP cube faces per scene. Functional mobile text is at least 11px; answers 14px. Hotspots recede where the reading overlay occupies the screen.
+
+## Panorama quality revision
+Original grainy path-traced images were replaced with larger renders processed through Open Image Denoise. Cube faces are 2048px on desktop and 1024px on mobile, with bilinear image conversion and browser sampling. Native SVG lettering follows the actual 3D sign planes using projected corners; the nine lobby branch labels use two larger lines. The board hotspot sits beside the board so it does not cover the lettering. UI palette and navigation are preserved.

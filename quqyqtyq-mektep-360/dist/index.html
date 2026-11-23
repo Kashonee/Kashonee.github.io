@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="kk" data-type="software"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#163a32"><meta name="description" content="Мектепті 360° аралап, құқықтың 9 саласымен таныс. Алты жағдаятты шешіп, біліміңді тәжірибеде қолдан."><meta name="page-type" content="software"><meta name="site-kind" content="gaming"><title>Құқықтық мектеп кеңістігі — 360° квест</title><link rel="stylesheet" href="style.css?v=3"></head>
+<body>
+<main id="app">
+<div id="world" role="img" aria-label="360 градус мектеп кеңістігі. Шолуды бұру үшін экранды сүйреңіз."></div>
+<div class="shade"></div>
+<header class="topbar"><button class="brand" id="home" aria-label="Мектеп алдына оралу"><span class="brand-icon" data-icon="school"></span><span>Құқықтық<br><strong>мектеп кеңістігі</strong></span></button><div class="top-center"><span class="live-dot"></span> ИНТЕРАКТИВТІ 360° КЕҢІСТІК</div><div class="top-actions"><button class="icon-btn" id="help" title="Қалай ойнауға болады?" aria-label="Көмек" data-icon="help"></button><button class="icon-btn" id="fullscreen" title="Толық экран" aria-label="Толық экран" data-icon="expand"></button><button class="map-toggle" id="mapToggle" aria-label="Мектеп картасы"><span data-icon="map"></span><span>Мектеп картасы</span></button></div></header>
+<div class="location"><span data-icon="pin"></span><span id="locationName">Мектеп алды</span><span class="location-sep"></span><span class="location-small">360° шолу</span></div>
+<aside class="journey" aria-label="Квест барысы"><div class="journey-top"><span>Сенің саяхатың</span><span id="progressText">0 / 6</span></div><div class="progress-track"><span id="progressFill"></span></div><p id="journeyHint">Алғашқы қадам — мектепке кіру</p><div class="journey-dots" id="journeyDots"></div></aside>
+<div id="hotspots"></div>
+<section class="intro" id="intro"><div class="intro-tag"><span class="tiny-orbit"></span> БІЛІМДІ ТӘЖІРИБЕГЕ АЙНАЛДЫР</div><h1>Құқығыңды біл.<br><span>Сенімді қадам жаса.</span></h1><p>Виртуалды мектепке қош келдің! Құқықпен таныс,<br class="desktop-br"> жағдаяттарды шеш және өз шешіміңді тап.</p><div class="intro-actions"><button class="primary" id="enter"><span data-icon="door"></span>Мектепке кіру</button><button class="text-button" id="how">Қалай ойнаймын? <span data-icon="play"></span></button></div><div class="intro-meta"><span>9 құқық саласы</span><i></i><span>6 тәжірибелік бекет</span><i></i><span>Өз қарқыныңмен</span></div></section>
+<section class="scene-card" id="sceneCard" hidden><span class="scene-label" id="sceneLabel"></span><h1 id="sceneTitle"></h1><p id="sceneDescription"></p><button class="primary" id="sceneAction"></button></section>
+<footer class="bottom-bar"><div class="drag-hint"><span data-icon="drag"></span><span>Айналаны көру үшін сүйре</span></div><div class="view-controls"><button id="turnLeft" aria-label="Солға бұру" data-icon="left"></button><span>360°</span><button id="turnRight" aria-label="Оңға бұру" data-icon="right"></button><span class="control-divider"></span><button id="zoomOut" aria-label="Алыстату" data-icon="minus"></button><button id="zoomIn" aria-label="Жақындату" data-icon="plus"></button></div><button class="source-button" id="sources">Дереккөздер <span data-icon="book"></span></button></footer>
+<div class="loading" id="loading"><span class="loader"></span><span>Мектеп кеңістігі дайындалуда…</span></div>
+</main>
+<dialog id="modal"><div id="modalContent"></div><button id="closeModal" class="close-btn" aria-label="Жабу" data-icon="close"></button></dialog>
+<div id="toast" role="status"></div>
+<script type="module" src="app.js?v=3"></script>
+</body></html>
