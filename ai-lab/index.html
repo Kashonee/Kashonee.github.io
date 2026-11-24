@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="kk" data-type="software">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17644d">
+  <meta name="page-type" content="software">
+  <meta name="site-kind" content="software">
+  <meta name="description" content="AI-LAB — 5–8 сынып оқушыларына арналған алгоритмдік ойлау зертханасы. Алгоритм құр, роботты басқар, шешіміңді түсіндір.">
+  <title>AI-LAB — алгоритмдік ойлау зертханасы</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/noto-regular.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="design.css">
+  <script src="app.js" type="module"></script>
+</head>
+<body>
+  <a href="#main" class="skip">Мазмұнға өту</a>
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#home" aria-label="AI-LAB басты бет"><span class="brand-symbol">a<span>i</span></span><span>AI-LAB<span class="brand-sub">Ойла. Құр. Тексер.</span></span></a>
+    <div class="sidebar-label">ОҚУ КЕҢІСТІГІ</div>
+    <nav id="nav" aria-label="Негізгі мәзір"></nav>
+    <div class="sidebar-bottom">
+      <a class="teacher-link" href="#teacher" id="teacher-link"></a>
+      <div class="sidebar-note"><span class="little-orbit" aria-hidden="true"></span><strong>Кішкентай қадамнан<br>үлкен шешімге.</strong><p>Әр қатең — үйренуге мүмкіндік.</p><a href="#method">Жоба туралы</a></div>
+      <div class="profile"><span class="avatar" aria-hidden="true">О</span><span><strong>Оқушы кеңістігі</strong><small>Жеке жаттығу</small></span><span class="profile-grade">5–8</span></div>
+    </div>
+  </aside>
+  <div class="page">
+    <header class="topbar"><button class="icon-btn menu-button" id="menu-button" aria-label="Мәзірді ашу" aria-expanded="false"></button><div class="breadcrumb">Оқу кеңістігі <span>/</span> <strong id="breadcrumb">Басты бет</strong></div><div class="topbar-end"><span class="grade-label">5–8 сыныптар</span><span class="language">ҚАЗ</span><a href="#method" class="icon-btn help-link" aria-label="Қолдану нұсқаулығы">?</a></div></header>
+    <button id="exit-presentation" class="button secondary presentation-exit">Кәдімгі көрініске оралу</button>
+    <main id="main" tabindex="-1"></main>
+    <footer><span>AI-LAB · Алгоритмдік ойлау зертханасы</span><span>Ойлану — өзіңнен. Бағыт — бізден.</span></footer>
+  </div>
+  <dialog id="quiz-dialog" aria-labelledby="quiz-heading"><div id="quiz-content"></div></dialog>
+  <div class="sr-only" id="announcement" role="status" aria-live="polite"></div>
+</body>
+</html>
