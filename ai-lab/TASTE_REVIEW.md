@@ -1,6 +1,6 @@
 GATE: OFF — no automated gate build active.
 
-# AI-LAB · Taste review
+# TamashaLike · Taste review
 
 This is a refinement of the existing classroom application. The navy/orange palette, Kazakh language, learning routes and saved-progress format are preserved.
 

@@ -1,4 +1,4 @@
-/* AI-LAB: one shared visual layer across the existing learning tools. */
+/* TamashaLike: one shared visual layer across the existing learning tools. */
 :root {
   --bg: #f4f6fa;
   --ink: #172d49;
@@ -715,3 +715,9 @@ dialog::backdrop { background: #1d2a407d; }
   .home-hero { min-height: 0; }
   .hero-lab-preview { break-inside: avoid; }
 }
+
+/* TamashaLike wordmark fits every navigation width. */
+.brand { font-size: 18px; gap: 10px; padding-left: 8px; padding-right: 8px; }
+.brand-symbol { width: 36px; height: 36px; padding: 0; font-size: 16px; letter-spacing: -.045em; flex-shrink: 0; }
+.brand-wordmark { min-width: 0; white-space: nowrap; }
+.brand-sub { font-size: 10px; margin-top: 6px; }
