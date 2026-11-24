@@ -872,3 +872,34 @@ main[data-route="lab"] .page-heading p { margin-top: 5px; font-size: 14px; }
   .run-controls,.clear-button,.editor-undo,.workspace-note input { display: none !important; }
   .rubric-row { break-inside: avoid; }
 }
+
+.live-ai { margin: 24px 0; padding: 24px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.live-ai-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.live-ai-heading h2 { font-size: 22px; }
+.live-ai-heading>span { font-size: 13px; color: var(--muted); }
+.live-ai-description { font-size: 15px; line-height: 1.8; margin-top: 10px; max-width: 65ch; }
+.live-ai-status { font-size: 14px; line-height: 1.7; color: var(--green); margin: 15px 0; }
+.live-ai-messages { max-height: 390px; overflow-y: auto; overscroll-behavior: contain; margin: 18px 0; scroll-padding: 15px; }
+.live-ai-empty { color: var(--muted); font-size: 14px; padding: 12px 0; }
+.live-ai-message { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.live-ai-message.user { padding: 14px 16px; background: var(--mint); border-bottom: 0; border-radius: 10px; }
+.live-ai-message strong { font-size: 13px; color: var(--muted); }
+.live-ai-message p { font-size: 16px; line-height: 1.85; margin-top: 6px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.live-ai-starters { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
+.live-ai-starters button { min-height: 44px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); background: var(--surface); font-size: 13px; }
+.live-ai-starters button:disabled { color: var(--muted); background: var(--bg); cursor: default; }
+#live-ai-form>label { display: block; font-size: 14px; font-weight: 600; }
+#live-ai-input { width: 100%; font-size: 16px; line-height: 1.7; margin-top: 7px; min-height: 105px; }
+.live-ai-actions { display: flex; gap: 10px 18px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
+.live-ai-actions .text-button { font-size: 14px; }
+.live-ai-data { font-size: 13px; color: var(--muted); line-height: 1.8; margin-top: 16px; max-width: 70ch; }
+.live-ai-error { color: #92452f; background: #fff0e7; font-size: 14px; line-height: 1.7; padding: 12px; margin-top: 12px; border-radius: 8px; }
+.ai-code-form { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+.ai-code-form label { flex: 1; font-size: 14px; min-width: 150px; }
+.ai-code-form input { display: block; min-height: 44px; width: 100%; margin-top: 6px; font-size: 16px; }
+@media (max-width:520px) {
+  .live-ai-heading h2 { font-size: 20px; }
+  .live-ai { padding: 20px 0; }
+  .live-ai-actions>.button { width: 100%; }
+  .live-ai-description { font-size: 15px; }
+}
