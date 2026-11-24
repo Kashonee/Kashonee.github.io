@@ -1,0 +1,442 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-24T15:48:26.805945+00:00",
+  "title": "Design System: TamashaLike",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Paper Ground",
+        "tonalRamp": [
+          "oklch(15% 0.0057 264.53)",
+          "oklch(26% 0.0057 264.53)",
+          "oklch(38% 0.0057 264.53)",
+          "oklch(49% 0.0057 264.53)",
+          "oklch(61% 0.0057 264.53)",
+          "oklch(72% 0.0057 264.53)",
+          "oklch(84% 0.0057 264.53)",
+          "oklch(95% 0.0057 264.53)"
+        ],
+        "canonical": "#f4f6fa"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "White Work Surface",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(26% 0.0000 89.88)",
+          "oklch(38% 0.0000 89.88)",
+          "oklch(49% 0.0000 89.88)",
+          "oklch(61% 0.0000 89.88)",
+          "oklch(72% 0.0000 89.88)",
+          "oklch(84% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ],
+        "canonical": "#fff"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Navy Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0586 255.23)",
+          "oklch(26% 0.0586 255.23)",
+          "oklch(38% 0.0586 255.23)",
+          "oklch(49% 0.0586 255.23)",
+          "oklch(61% 0.0586 255.23)",
+          "oklch(72% 0.0586 255.23)",
+          "oklch(84% 0.0586 255.23)",
+          "oklch(95% 0.0586 255.23)"
+        ],
+        "canonical": "#172d49"
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Quiet Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0404 255.00)",
+          "oklch(26% 0.0404 255.00)",
+          "oklch(38% 0.0404 255.00)",
+          "oklch(49% 0.0404 255.00)",
+          "oklch(61% 0.0404 255.00)",
+          "oklch(72% 0.0404 255.00)",
+          "oklch(84% 0.0404 255.00)",
+          "oklch(95% 0.0404 255.00)"
+        ],
+        "canonical": "#5b6c82"
+      },
+      "green": {
+        "role": "primary",
+        "displayName": "Burnt Orange",
+        "tonalRamp": [
+          "oklch(15% 0.1570 41.51)",
+          "oklch(26% 0.1570 41.51)",
+          "oklch(38% 0.1570 41.51)",
+          "oklch(49% 0.1570 41.51)",
+          "oklch(61% 0.1570 41.51)",
+          "oklch(72% 0.1570 41.51)",
+          "oklch(84% 0.1570 41.51)",
+          "oklch(95% 0.1570 41.51)"
+        ],
+        "canonical": "#b74711"
+      },
+      "green-dark": {
+        "role": "primary",
+        "displayName": "Deep Burnt Orange",
+        "tonalRamp": [
+          "oklch(15% 0.1397 41.35)",
+          "oklch(26% 0.1397 41.35)",
+          "oklch(38% 0.1397 41.35)",
+          "oklch(49% 0.1397 41.35)",
+          "oklch(61% 0.1397 41.35)",
+          "oklch(72% 0.1397 41.35)",
+          "oklch(84% 0.1397 41.35)",
+          "oklch(95% 0.1397 41.35)"
+        ],
+        "canonical": "#9e3d10"
+      },
+      "mint": {
+        "role": "primary",
+        "displayName": "Cool Blue Tint",
+        "tonalRamp": [
+          "oklch(15% 0.0137 258.35)",
+          "oklch(26% 0.0137 258.35)",
+          "oklch(38% 0.0137 258.35)",
+          "oklch(49% 0.0137 258.35)",
+          "oklch(61% 0.0137 258.35)",
+          "oklch(72% 0.0137 258.35)",
+          "oklch(84% 0.0137 258.35)",
+          "oklch(95% 0.0137 258.35)"
+        ],
+        "canonical": "#e7edf6"
+      },
+      "lime": {
+        "role": "primary",
+        "displayName": "Warm Orange Goal",
+        "tonalRamp": [
+          "oklch(15% 0.1252 63.82)",
+          "oklch(26% 0.1252 63.82)",
+          "oklch(38% 0.1252 63.82)",
+          "oklch(49% 0.1252 63.82)",
+          "oklch(61% 0.1252 63.82)",
+          "oklch(72% 0.1252 63.82)",
+          "oklch(84% 0.1252 63.82)",
+          "oklch(95% 0.1252 63.82)"
+        ],
+        "canonical": "#ffb46b"
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Workbook Rule",
+        "tonalRamp": [
+          "oklch(15% 0.0168 259.42)",
+          "oklch(26% 0.0168 259.42)",
+          "oklch(38% 0.0168 259.42)",
+          "oklch(49% 0.0168 259.42)",
+          "oklch(61% 0.0168 259.42)",
+          "oklch(72% 0.0168 259.42)",
+          "oklch(84% 0.0168 259.42)",
+          "oklch(95% 0.0168 259.42)"
+        ],
+        "canonical": "#dde4ef"
+      },
+      "blue": {
+        "role": "secondary",
+        "displayName": "Loop Blue",
+        "tonalRamp": [
+          "oklch(15% 0.0149 260.73)",
+          "oklch(26% 0.0149 260.73)",
+          "oklch(38% 0.0149 260.73)",
+          "oklch(49% 0.0149 260.73)",
+          "oklch(61% 0.0149 260.73)",
+          "oklch(72% 0.0149 260.73)",
+          "oklch(84% 0.0149 260.73)",
+          "oklch(95% 0.0149 260.73)"
+        ],
+        "canonical": "#e9eff9"
+      },
+      "peach": {
+        "role": "secondary",
+        "displayName": "Branch Peach",
+        "tonalRamp": [
+          "oklch(15% 0.0206 67.58)",
+          "oklch(26% 0.0206 67.58)",
+          "oklch(38% 0.0206 67.58)",
+          "oklch(49% 0.0206 67.58)",
+          "oklch(61% 0.0206 67.58)",
+          "oklch(72% 0.0206 67.58)",
+          "oklch(84% 0.0206 67.58)",
+          "oklch(95% 0.0206 67.58)"
+        ],
+        "canonical": "#faeee2"
+      },
+      "focus": {
+        "role": "neutral",
+        "displayName": "Slate Focus",
+        "tonalRamp": [
+          "oklch(15% 0.0624 261.24)",
+          "oklch(26% 0.0624 261.24)",
+          "oklch(38% 0.0624 261.24)",
+          "oklch(49% 0.0624 261.24)",
+          "oklch(61% 0.0624 261.24)",
+          "oklch(72% 0.0624 261.24)",
+          "oklch(84% 0.0624 261.24)",
+          "oklch(95% 0.0624 261.24)"
+        ],
+        "canonical": "#7b91b7"
+      },
+      "field-border": {
+        "role": "neutral",
+        "displayName": "Field Border",
+        "tonalRamp": [
+          "oklch(15% 0.0106 261.79)",
+          "oklch(26% 0.0106 261.79)",
+          "oklch(38% 0.0106 261.79)",
+          "oklch(49% 0.0106 261.79)",
+          "oklch(61% 0.0106 261.79)",
+          "oklch(72% 0.0106 261.79)",
+          "oklch(84% 0.0106 261.79)",
+          "oklch(95% 0.0106 261.79)"
+        ],
+        "canonical": "#ccd0d7"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Hero",
+        "purpose": "Home hero; default desktop role with responsive overrides."
+      },
+      "headline": {
+        "displayName": "Route Heading",
+        "purpose": "Page title."
+      },
+      "title": {
+        "displayName": "Section Heading",
+        "purpose": "Base section heading; contextual sizes vary."
+      },
+      "body": {
+        "displayName": "Body Base",
+        "purpose": "16px base; most workbook prose uses 14px overrides."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Associated field labels and compact controls."
+      },
+      "secondary": {
+        "displayName": "Secondary",
+        "purpose": "Supporting information."
+      },
+      "metadata": {
+        "displayName": "Metadata",
+        "purpose": "Small counters and contextual notes."
+      }
+    },
+    "shadows": [
+      {
+        "name": "diagnostic",
+        "value": "0 20px 100px #27344b30",
+        "purpose": "Native diagnostic dialog."
+      },
+      {
+        "name": "mobile-navigation",
+        "value": "10px 0 80px #122a3330",
+        "purpose": "Open mobile sidebar."
+      },
+      {
+        "name": "illustration-command",
+        "value": "0 6px 20px #3c475909",
+        "purpose": "Robot-route command strip."
+      },
+      {
+        "name": "board-wall",
+        "value": "inset 0 -5px 0 #7d8799",
+        "purpose": "Executable wall cells."
+      },
+      {
+        "name": "illustration-goal",
+        "value": "0 6px 0 #b7c5dd",
+        "purpose": "Illustrated goal tile."
+      },
+      {
+        "name": "illustration-obstacle",
+        "value": "0 6px 0 #c8cfda",
+        "purpose": "Illustrated obstacle tiles."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "purpose": "Actual --ease CSS custom property."
+      },
+      {
+        "name": "control-transition",
+        "value": "160ms",
+        "purpose": "Button background, text and press transitions."
+      },
+      {
+        "name": "mobile-navigation",
+        "value": "0.2s",
+        "purpose": "Sidebar translation."
+      },
+      {
+        "name": "hero-entrance",
+        "value": "0.5s",
+        "purpose": "Home hero arrival, opacity .6 to 1 and translateY(8px) to 0."
+      },
+      {
+        "name": "execution-step",
+        "value": "390ms",
+        "purpose": "Real execution playback interval; 80ms with reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide",
+        "value": "1600px",
+        "query": "min-width"
+      },
+      {
+        "name": "compact-desktop",
+        "value": "1190px",
+        "query": "max-width"
+      },
+      {
+        "name": "stacked-home",
+        "value": "1020px",
+        "query": "max-width"
+      },
+      {
+        "name": "tablet",
+        "value": "960px",
+        "query": "max-width"
+      },
+      {
+        "name": "mobile-navigation",
+        "value": "720px",
+        "query": "max-width"
+      },
+      {
+        "name": "phone",
+        "value": "520px",
+        "query": "max-width"
+      }
+    ],
+    "focus": {
+      "outline": "3px solid #7b91b7",
+      "outlineOffset": "4px"
+    },
+    "backdrop": {
+      "background": "#2b344270",
+      "backdropFilter": "blur(4px)"
+    },
+    "reducedMotion": "CSS animations and transitions are disabled; scroll becomes automatic and execution interval becomes 80ms.",
+    "sourceFiles": [
+      "dist/style.css",
+      "dist/design.css",
+      "dist/index.html",
+      "dist/app.js"
+    ],
+    "status": "Observed implementation after user-requested general redesign; bounded browser checks recorded in DESIGN.md."
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main next action in the workbook.",
+      "html": "<button class=\"ds-primary\">Миссияны бастау</button>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:11px 18px;border:1px solid transparent;border-radius:9px;font:700 14px/1.5 Lab Sans,Arial,sans-serif;cursor:pointer;transition:background-color 160ms,transform 160ms cubic-bezier(.16,1,.3,1);background:var(--green,#b74711);color:#fff}@media(hover:hover) and (pointer:fine){.ds-primary:hover{background:var(--green-dark,#9e3d10)}}.ds-primary:focus-visible{outline:3px solid var(--focus,#7b91b7);outline-offset:4px}.ds-primary:active{transform:scale(.98)}.ds-primary:disabled{opacity:.45;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Supporting action on a white surface.",
+      "html": "<button class=\"ds-secondary\">Қадамдап орындау</button>",
+      "css": ".ds-secondary{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:11px 18px;border:1px solid transparent;border-radius:9px;font:700 14px/1.5 Lab Sans,Arial,sans-serif;cursor:pointer;transition:background-color 160ms,transform 160ms cubic-bezier(.16,1,.3,1);background:var(--surface,#fff);color:var(--ink,#172d49);border-color:#dbdee3}@media(hover:hover) and (pointer:fine){.ds-secondary:hover{background:#f4f6f9;border-color:#bfc4ce}}.ds-secondary:focus-visible{outline:3px solid var(--focus,#7b91b7);outline-offset:4px}.ds-secondary:active{transform:scale(.98)}.ds-secondary:disabled{opacity:.45;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}}"
+    },
+    {
+      "name": "Text Action",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "Quiet prepared-hint or secondary text action.",
+      "html": "<button class=\"ds-text\">Дайын кеңесті ашу</button>",
+      "css": ".ds-text{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:10px 0;border:0;background:none;color:var(--green,#b74711);font:700 14px/1.6 Lab Sans,Arial,sans-serif;cursor:pointer;transition:color 160ms}@media(hover:hover) and (pointer:fine){.ds-text:hover{color:#1e3763;text-decoration:underline}}.ds-text:focus-visible{outline:3px solid var(--focus,#7b91b7);outline-offset:4px}.ds-text:active{transform:scale(.98)}@media(prefers-reduced-motion:reduce){.ds-text{transition:none}}"
+    },
+    {
+      "name": "Prediction Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "A labeled number prediction before execution.",
+      "html": "<label class=\"ds-label\" for=\"ds-prediction\">Қанша қадам қажет деп ойлайсың?</label><input class=\"ds-field\" id=\"ds-prediction\" type=\"number\" min=\"1\" max=\"192\" placeholder=\"Болжамыңды жаз\">",
+      "css": ".ds-label{display:block;margin-bottom:9px;color:var(--ink,#172d49);font:600 14px/1.7 Lab Sans,Arial,sans-serif}.ds-field{max-width:100%;min-height:44px;padding:10px 12px;color:var(--ink,#172d49);background:var(--surface,#fff);border:1px solid var(--field-border,#ccd0d7);border-radius:9px;font:400 14px/1.6 Lab Sans,Arial,sans-serif;caret-color:var(--green,#b74711)}.ds-field::placeholder{color:#626c7c;opacity:1}.ds-field:focus-visible{outline:3px solid var(--focus,#7b91b7);outline-offset:4px}"
+    },
+    {
+      "name": "Workbook Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Vertical links with a clear current-route state.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Оқу кеңістігі\"><a href=\"#home\" aria-current=\"page\">Басты бет</a><a href=\"#tasks\">Миссиялар</a><a href=\"#lab\">Зертхана</a></nav>",
+      "css": ".ds-nav{display:flex;flex-direction:column;gap:7px;width:196px}.ds-nav a{display:flex;align-items:center;gap:13px;min-height:48px;padding:11px 14px;color:#6a7587;border-radius:8px;font:600 14px/1.6 Lab Sans,Arial,sans-serif;text-decoration:none;transition:color 160ms}.ds-nav a[aria-current=\"page\"]{background:#eef0f3;color:var(--green,#b74711)}@media(hover:hover) and (pointer:fine){.ds-nav a:hover{background:#f4f5f7;color:var(--green,#b74711)}}.ds-nav a:focus-visible{outline:3px solid var(--focus,#7b91b7);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-nav a{transition:none}}"
+    },
+    {
+      "name": "Mission Filter",
+      "kind": "chip",
+      "refersTo": "filter",
+      "description": "Action chip for filtering the mission list.",
+      "html": "<button class=\"ds-filter\" aria-pressed=\"true\">Барлығы</button> <button class=\"ds-filter\" aria-pressed=\"false\">Цикл</button>",
+      "css": ".ds-filter{padding:9px 14px;min-height:42px;border:1px solid var(--line,#dde4ef);border-radius:8px;background:#fff;color:var(--muted,#5b6c82);font:400 14px/1.6 Lab Sans,Arial,sans-serif;cursor:pointer;transition:background-color 160ms}.ds-filter[aria-pressed=\"true\"]{background:var(--green,#b74711);color:#fff;border-color:var(--green,#b74711)}@media(hover:hover) and (pointer:fine){.ds-filter[aria-pressed=\"false\"]:hover{background:#eff1f5}}.ds-filter:focus-visible{outline:3px solid var(--focus,#7b91b7);outline-offset:4px}.ds-filter:active{transform:scale(.98)}@media(prefers-reduced-motion:reduce){.ds-filter{transition:none}}"
+    },
+    {
+      "name": "Workbook Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Flat bordered container with a divided title bar.",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-title\"><h3>Робот алаңы</h3><span>5 × 5</span></header><p class=\"ds-panel-copy\">Мақсат пен кедергіні анықта.</p></section>",
+      "css": ".ds-panel{background:var(--surface,#fff);border:1px solid var(--line,#dde4ef);border-radius:14px;overflow:hidden;color:var(--ink,#172d49);font-family:Lab Sans,Arial,sans-serif}.ds-panel-title{display:flex;align-items:center;justify-content:space-between;padding:14px 21px;border-bottom:1px solid var(--line,#dde4ef);min-height:60px}.ds-panel-title h3{margin:0;font-size:14px;line-height:1.3;font-weight:700;letter-spacing:-.01em}.ds-panel-title span{font-size:13px;color:var(--muted,#5b6c82);font-variant-numeric:tabular-nums}.ds-panel-copy{padding:18px 21px;margin:0;color:var(--muted,#5b6c82);font-size:14px;line-height:1.8}"
+    },
+    {
+      "name": "Program Command",
+      "kind": "custom",
+      "description": "Numbered command row with real keyboard-operable controls.",
+      "html": "<div class=\"ds-command\"><span class=\"ds-number\">1</span><svg class=\"ds-arrow\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" aria-hidden=\"true\"><path d=\"M5 12h14m-6-6 6 6-6 6\"/></svg><span class=\"ds-command-label\">Оңға жылжу</span><button class=\"ds-command-action\" aria-label=\"Команданы жоғары жылжыту\">↑</button><button class=\"ds-command-action\" aria-label=\"Команданы төмен жылжыту\">↓</button><button class=\"ds-command-action ds-remove\" aria-label=\"Команданы жою\">×</button></div>",
+      "css": ".ds-command{display:flex;align-items:center;gap:8px;min-height:46px;padding:6px 7px;border:1px solid transparent;border-radius:7px;background:#f1f3f7;color:var(--ink,#172d49);font-family:Lab Sans,Arial,sans-serif}.ds-number{width:15px;text-align:center;font-size:12px;color:var(--muted,#5b6c82);font-variant-numeric:tabular-nums}.ds-arrow{width:17px;height:17px;color:#697995;flex-shrink:0}.ds-command-label{flex:1;font-size:14px;line-height:1.6}.ds-command-action{display:inline-flex;align-items:center;justify-content:center;width:25px;height:32px;padding:0;border:0;border-radius:8px;background:transparent;color:var(--muted,#5b6c82);font:400 16px Lab Sans,Arial,sans-serif;cursor:pointer}.ds-command-action:focus-visible{outline:3px solid var(--focus,#7b91b7);outline-offset:4px}@media(hover:hover) and (pointer:fine){.ds-command-action:hover{background:#eff1f5;color:var(--green,#b74711)}.ds-remove:hover{color:#a65b47;background:#f8e2d8}}.ds-command-action:active{transform:scale(.98)}.ds-command.ds-executing{border-color:#77869f;background:#e6ebf5}.ds-command.ds-failed{border-color:#bb6c55;background:#fff0e9}.ds-command.ds-repeat{background:#eaf0fa}.ds-command.ds-if{background:#fcf0e1}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Navy & Orange Learning Workspace",
+    "overview": "Overall visual redesign with navy navigation, orange selected states, white task surfaces, a real robot-board mission preview and consistent styling across all seven routes. dist/design.css is the current visual authority.",
+    "keyCharacteristics": [
+      "Navy rail and orange selection",
+      "Readable Kazakh typography",
+      "Real mission preview",
+      "Shared controls across all learning routes",
+      "Responsive native interactions"
+    ],
+    "rules": [
+      {
+        "name": "The Visible Meaning Rule",
+        "body": "Pair category, result and execution colors with words, icons, numbering or a visible border; color does not carry the instruction alone.",
+        "section": "colors"
+      },
+      {
+        "name": "The Quiet Surface Rule",
+        "body": "Keep ordinary workbook panels flat and bordered; reserve lifted depth for the diagnostic, mobile navigation and robot-route illustration.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** preserve the bright pupil-workbook direction and restrained navy-orange hierarchy.",
+      "**Do** use locally hosted Kazakh-capable typography and clear label associations.",
+      "**Do** connect robot visuals and motion to the algorithm being learned.",
+      "**Do** retain visible focus, keyboard command controls, the inert closed mobile sidebar and reduced-motion behavior.",
+      "**Do** distinguish prepared guidance from the external ChatGPT handoff."
+    ],
+    "donts": [
+      "**Don't** turn category blue or peach into competing primary actions.",
+      "**Don't** replace task labels, status wording or step numbering with color alone.",
+      "**Don't** add ambient elevation to ordinary workbook panels.",
+      "**Don't** imply that prepared hints are live model inference or that local progress represents a whole class."
+    ]
+  }
+}
