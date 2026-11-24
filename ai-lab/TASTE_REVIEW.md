@@ -2,7 +2,7 @@ GATE: OFF — no automated gate build active.
 
 # AI-LAB · Taste review
 
-This is a refinement of the existing classroom application. The forest/lime identity, Kazakh language, learning routes and saved-progress format are preserved.
+This is a refinement of the existing classroom application. The navy/orange palette, Kazakh language, learning routes and saved-progress format are preserved.
 
 - Kind: software, interactive learning workspace for grades 5–8.
 - Primary action: «Жаттығуды бастау».
