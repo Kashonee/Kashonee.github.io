@@ -15,3 +15,25 @@ test('student navigation uses Kazakh while preserving established routes',()=>{c
 test('English diagnostic task stems and answer choices remain intact under Kazakh controls',()=>{const b=boot();b.navigate('#/diagnostic/1/0');const q=b.D.items[0];assert.ok(b.html().includes(q.question));for(const option of q.options)assert.ok(b.html().includes(option));assert.match(b.html(),/СҰРАҚ 01/);assert.match(b.html(),/class="question-text" lang="en"/);});
 test('writing editor has Kazakh guidance with the original English assignment',()=>{const b=boot(),w=b.lab.writingTasks[0];b.navigate('#/writing/'+w.id);assert.ok(b.html().includes(w.prompt));assert.match(b.html(),/Пікір білдіру эссесі/);assert.match(b.html(),/Ағылшын тіліндегі мәтініңді осында жаз/);assert.match(b.html(),/class="writing-prompt" lang="en"/);});
 test('vocabulary categories are localized without translating the learning cards',()=>{const b=boot();b.navigate('#/vocab');assert.match(b.html(),/Фразалық етістіктер/);assert.ok(b.html().includes(b.words[0].word));assert.ok(b.html().includes(b.words[0].example));});
+
+test('sample answers expose selection and feedback without changing learner progress',()=>{
+ const b=boot();b.navigate('#/platform');
+ const before=JSON.stringify(b.lab.getState()),stored=b.storage.get('english-olympiad-lab-v1');
+ assert.match(b.html(),/role="group" aria-labelledby="sample-question" aria-describedby="sample-feedback"/);
+ const wrong=b.click({action:'sample-answer',value:'have'});
+ assert.equal(wrong.getAttribute('aria-pressed'),'true');assert.equal(wrong.dataset.result,'incorrect');
+ assert.match(b.nodes.get('sample-feedback').textContent,/Қайта байқап көр/);
+ const right=b.click({action:'sample-answer',value:'has'});
+ assert.equal(right.getAttribute('aria-pressed'),'true');assert.equal(right.dataset.result,'correct');
+ assert.match(b.nodes.get('sample-feedback').textContent,/^Дұрыс/);
+ assert.equal(JSON.stringify(b.lab.getState()),before);assert.equal(b.storage.get('english-olympiad-lab-v1'),stored);
+});
+
+test('theme action updates preference without replacing the active view or sample feedback',()=>{
+ const b=boot();b.navigate('#/platform');b.click({action:'sample-answer',value:'has'});
+ const view=b.html(),feedback=b.nodes.get('sample-feedback').textContent;
+ b.click({action:'theme-toggle'});
+ assert.equal(b.ctx.window.QAISAR_THEME.current(),'dark');
+ assert.equal(b.html(),view);assert.equal(b.nodes.get('sample-feedback').textContent,feedback);
+ b.click({action:'theme-toggle'});assert.equal(b.ctx.window.QAISAR_THEME.current(),'light');
+});
