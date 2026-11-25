@@ -71,3 +71,12 @@ node --test tests/*.test.cjs
 193 автоматических теста проходят, включая сценарии Groq и сохранённую совместимость с OpenAI при явном выборе провайдера. Реальный запрос к Groq и обновление функции в Supabase из этой среды не выполнялись. Публикация сайта обновляет интерфейс и инструкцию, но не функцию Supabase.
 
 Обработка ответа v3: модель выбирает ID фрагмента, а сервер подставляет точную цитату из сохранённого эссе. Избыточное число полезных пунктов ограничивается без отклонения всего разбора. Недопустимые оценки, отсутствующие задания и неизвестные ID по-прежнему отклоняются с безопасным кодом причины. Обновляется код существующей функции; SQL и ключи не меняются. Причина конкретного ранее отклонённого ответа не установлена: предыдущая версия возвращала общий код без подробностей.
+
+
+## Grade 8 archive and preparation
+
+`#/grade8` adds six owner-supplied district, regional and national papers from 2024–2025 and 2025–2026. All 12 original documents are preserved in `materials/grade8/`; the national writing illustration is extracted from its PDF. `grade8-data.js` records 240 response slots, primary topic tags, known key ambiguities, source transcripts and 50 vocabulary cards. `grade8.js` provides filters, answer sheets, manual-review states, source-linked analysis, 22 topic priorities, 66 separate practice questions and vocabulary review dates.
+
+Progress is stored under `state.grade8`, sanitized on import and included in existing JSON/cloud snapshots and text reports. Teachers can inspect submitted scores, disputed answers and writing for a selected pupil. Existing diagnostic IDs and scores retain their meaning. The latest submitted attempt per paper supplies topic evidence; unfinished new drafts do not overwrite that evidence. Up to five submissions per paper are retained. Disputed questions are excluded from the automatic maximum; unmatched valid-looking transformations remain pending, and writing is manually assessed. Vocabulary review intervals are browser/account data; no notification automation is created.
+
+Run `node --test english-olympiad-lab/tests/*.test.cjs` from the repository root.
