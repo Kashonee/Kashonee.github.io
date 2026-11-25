@@ -18,3 +18,32 @@ window.LESSON_VIDEOS = {
  G15:[{id:'AJYAj8tLFoc',title:'Устойчивые фразы: at, in, on, by, for',channel:'English Galaxy',views:45851,language:'ru',focus:'Предлогтарды жеке аудармай, тұрақты тіркестің ішінде үйрену.'}],
  G16:[{id:'iHpzFpix49M',title:'Почему -ED и -ING меняют смысл фразы',channel:'Luke McCarthy English',views:72506,language:'ru',focus:'Bored/boring сияқты жұптарды орысша түсіндіру және тірі мысалдармен салыстыру.'}]
 };
+// Chapter markers transcribed from public video descriptions; omitted where unverified.
+window.VIDEO_CHAPTERS={
+ s9iRB_4SyJU:[[67,'Gerund деген не?'],[192,'Мысалдар'],[321,'Бірінші жаттығу']],
+ rcfLoIyjBkU:[[56,'Clause деген не?'],[180,'Relative clause'],[263,'Defining'],[354,'Non-defining']],
+ hlS9z90Krtg:[[59,'Second Conditional'],[147,'If I were'],[222,'Third Conditional']],
+ iHpzFpix49M:[[53,'-ed пен -ing'],[147,'Өзіңді тексер'],[236,'Мысалдар']]
+};
+window.VIDEO_TASKS={
+ G01:['Before → yesterday; now → at the moment. Write the missing form: She ___ (read) at the moment.','is reading','At the moment → am/is/are + V-ing.'],
+ G02:['Change to Passive: They wash the car. → The car ___ .','is washed','Car жекеше: is + washed.'],
+ G03:['If I had a bike, I ___ (ride) to school.','would ride','Қазіргі қиял: would + V1.'],
+ G04:['No need to buy a ticket. You ___ pay. (must not/do not have to)','do not have to','Міндетті емес; тыйым емес.'],
+ G05:['I enjoy ___ (cook).','cooking','Enjoy + doing.'],
+ G06:['She said, “I am busy.” → She said she ___ busy.','was','Am → was: өткендегі хабарлау.'],
+ G07:['There is ___ apple on the plate. (a/an)','an','Дауысты дыбыстың алдында an.'],
+ G08:['The children ___ happy. (is/are)','are','Бұл видео to be негізін түсіндіреді. Күрделі everyone/equipment үлгілерін жазбаша қадамдардан қара.'],
+ G09:['My aunt, ___ lives in Oral, is a doctor. (who/that)','who','Үтірлі қосымша мәліметте that болмайды.'],
+ G10:['This chair is ___ (comfortable) than that one.','more comfortable','Ұзын сын есім: more.'],
+ G11:['Never ___ I seen this before. (have/did)','have','Have seen → have I seen.'],
+ G12:['She had her nails ___ (paint).','painted','Have + зат + V3.'],
+ G13:['I wish I ___ (know) the answer now.','knew','Қазіргі тілек: Past Simple.'],
+ G14:['___ the rain, we went out. (Although/Despite)','Despite','Despite + noun.'],
+ G15:['The train leaves ___ six. (in/on/at)','at','Нақты сағатпен at.'],
+ G16:['The film made me feel ___. (bored/boring)','bored','Адам сезімді сезіп тұр.']
+};
+
+// The first G03 video covers real conditions; the second covers imagined conditions.
+window.VIDEO_TASKS['G03-0']=['If it rains tomorrow, we ___ (stay) at home.','will stay','First Conditional: if + Present Simple, will + V1.'];
+window.VIDEO_TASKS['G03-1']=window.VIDEO_TASKS.G03;
