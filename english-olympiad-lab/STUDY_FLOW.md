@@ -22,4 +22,12 @@ Run all checks from the repository root:
 node --test english-olympiad-lab/tests/*.test.cjs
 ```
 
-240 tests cover migration, shared routes, independent practice evidence, all source-slot explanations, source prompt coverage, original score logic, deadline reload/expiry, late-input rejection, productive word recall, intervals, exports, escaping and unique HTML IDs. UI assertions for the old navigation were updated for the unified route; uniqueness assertions now check actual `id` attributes rather than accidentally counting `data-id` values.
+258 tests cover migration, shared routes, independent practice evidence, all source-slot explanations, source prompt coverage, original score logic, deadline reload/expiry, late-input rejection, productive word recall, intervals, exports, escaping and unique HTML IDs. UI assertions for the old navigation were updated for the unified route; uniqueness assertions now check actual `id` attributes rather than accidentally counting `data-id` values.
+
+## Follow-up reliability review — 27 November 2026
+
+Full diagnostic recommendations now use only actual correct/wrong responses after submission; blank and pending work are excluded from weakness counts. Already correct evidence is described as consolidation rather than missing data.
+
+Starting another short practice keeps the prior checked answers in `lastValues`; counts, reports and JSON reload preserve the first and previous result while a new draft is in progress. Productive word retries likewise retain a bounded `last` pair of checked answers. When a review date arrives, the interface hides the old answer and accepts a new recall without discarding that evidence. Empty word submissions do not create a result or change the review date; an explicit `?` remains available when the pupil does not know.
+
+The teacher text export describes the work in Kazakh rather than dumping the study state as JSON. JSON export remains available separately. English negative contractions and a plain hyphen for a no-article answer are accepted. Video comprehension checks use the same normalization. The initial exam clock shows seconds accurately when reopening an in-progress attempt.
